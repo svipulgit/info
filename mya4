@@ -1,0 +1,220 @@
+a4c create -c -p svipul.etcN.0 -b Bgp -b gated -b ArBgp eos-trunk etcN
+a4 mut clone -c <mutname like et> <dir>
+a4 mut clone -p il.elgin-rel -c elgin elgin
+a4 mut clone -p arbgp-trunk-dmz.common -c ar-conv arconv -b ArBgp -b gated -b Bgp
+a4 mut switch -1
+
+=======
+a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul
+a4 newtree atbu ga.atlanta-bugfix-svipul
+a4 deletetree < dir name >
+
+a4 project newpackage Demo
+
+patch -p 1 -i ~/diffs/vxlan4.diff
+
+a4 update
+a4 submit
+
+a4 add -t text+x filename
+====== add following in description to bypass content check ====
+autosubmitted=1
+
+a4 make -p < project >          // all and install
+a4 make -p < project >  product-nocheck        // all and install, install rpms
+
+=======
+a) build the Lag package (a4 make -p Lag all install)
+or
+b) install Lag's Requires and BuildRequires (a4 make -p Lag all-requires).
+ 
+Either a) or b) is required for a package's breadth tests to run correctly.
+========
+
+a4 project setting
+a4 project setting autobuild=0
+
+a4 client
+a4 fstat *  // Dump file info
+a4 fstat -Or <filename> // way to figure out where an open file  came from
+a4 edit -t text <file>  // change file type to text
+
+a4 annotate -ci  //src/ArosTest/2010.Alta2/ArosTest/__init__
+a4 grep 'copy %s supervisor-peer:/mnt/%s' __init__
+
+md5sum <filename>
+
+areport
+
+ap abuild -b 2010.EOS$ -m 2 -q
+ap abuild -gx
+Abuildd -k -p 2013.arad-patch-svipul   // kill abuild
+pstree -alp       // check abuild status
+
+a4 filelog 
+a4 filelog -h
+
+gnome-open project.ps
+
+# Rebuild EOS.swi to pickup changed RPM
+a4 make -p EosImage clean 
+a4 make -p EosImage EOS.swi
+
+# fullproof recursive way:
+a4 make -r -p EosImage all install
+
+a4 mock // tests your dependencies by only installing the things the package
+depends on and then builds the package, runs the tests, etc
+
+'a4 describe -p'. It generates a format suitable for 
+'a4 project patch', which may work for reviewboard 
+patch SandSsoLib.py -i ~/diffs/joseph.720045.diff -o newfile
+
+a4 project postreview -r <NUM> -c "Incorporated review comments"
+
+a4 logscan --nextBuild=2012.svipul -i
+
+# run as arastra user
+P4USER=arastra a4 unlock/change etc
+
+ >a4 project create -p < parent project > < new project >
+ %a4 project fork 2010.branchName // obsolete!
+ %a4 project show
+ %a4 project branchpackage < package name >
+ %a4 project unbranchpackage < package name >
+ %a4 project sync  // update to latest sync point
+a4 project sync --change=713333
+ %a4 update                       // updates your workspace with changes in the repository
+                                  // good to do often to minimize risk of interactions with
+                                  // other's submissions.
+a4 yum install EosImage-ptests
+ %a4 yum update
+a4 yumdownloader python-simplejson.i686   // download rpm
+ %a4 rpmbuild < package >         // Needed to load rpms to duts using art
+ %a4 configure < project >
+ %a4 make -p < project >          // all and install
+ %a4 make -p < project > all      // build project
+ %a4 make -p < project > install  // bring back symlinks after a rpmbuild
+ %a4 make -p < project > check    // run all the breadth tests
+ %a4 make sanity                  // run all sanity tests
+                                  //  do this before submitting to shared branch
+ a4 revert ...    // revert everything under current dir
+
+// disable merge from all children
+a4 project setting -p 2011.arad mergeFromChildren='^$'
+
+// Get info about p4 user
+a4 user -o rjain
+
+// Login as other p4 user
+$ a4 ssh bs312
+$ sudo su -l rjain
+$ P4CLIENT=bs312.sjc.aristanetworks.com.60044.1407840697.259346 P4USER=rjain a4 unlock //eng/etc/logre
+
+// Get info about temporary p4 client id
+a4 client -o bs312.sjc.aristanetworks.com.60044.1407840697.259346
+
+'60044' is the uid of user 'rjain'
+
+a4 logscan -i --next=fl.l3scale --package=Sand
+
+^^^^^^^^^^^ Example:
+
+% a4 print //src/Pim/2010.EOS/Watchers
+a4 print -c CHANGE -p PROJECT /src/Package/File.tin
+//src/Pim/2010.EOS/Watchers#5 - integrate change 666227 (text)
+sriram
+eitan
+holbrook
+asang
+svipul
+
+% a4 diff2 -du //src/Pim/{EOS-4.8.3,2010.EOS}/Watchers
+
+// diff of entire package (check what sync would bring in)
+a4 diff2 src/Ospf/... //src/Ospf/2010.fxia6-2/...
+
+// diff project at specific change
+a4 diff2 //src/*/ca.cupertino-t2diags.tshanks-add_creek/...@1591309 //src/*/ca.cupertino-t2diags.tshanks-add_creek/...
+
+==== //src/Pim/EOS-4.8.3/Watchers#1 (text) - //src/Pim/2010.EOS/Watchers#5 (text) ==== content
+@@ -1,3 +1,5 @@
+ sriram
+ eitan
+ holbrook
++asang
++svipul
+
+% a4 diff2 //src/Pim/{EOS-4.8.3,2010.EOS}/Watchers
+==== //src/Pim/EOS-4.8.3/Watchers#1 (text) - //src/Pim/2010.EOS/Watchers#5 (text) ==== content
+3a4,5
+> asang
+> svipul
+
+# See all changes in a given package:
+a4 changes -a //src/<Pkg>/<Project>/...
+
+% a4 changes -ai //src/Pim/2010.EOS/Watchers
+666227 2012-04-21 arastra 2010.EOS,eng         2010.EOS@666123 autobuild
+662893 2012-04-17 svipul  2012.svipul-cli      Updating ctags yum install comm
+536083 2011-12-06 arastra 2010.EOS,eng         2010.EOS@536026 autobuild
+535720 2011-12-05 arastra 2011.bangalore,eng   2011.bangalore-asang@535700 aut
+535699 2011-12-05 asang   2011.bangalore-asang Added myself to watchers
+535697 2011-12-05 asang   2011.bangalore-asang,eng For adding myself to Watchers
+379515 2011-04-04 hzhong  2010.EOS             update maintainers
+272912 2010-07-02 arastra 2010.EOS,eng         2010.eos450merge@272874 automer
+
+ap bs #lists all servers
+ap freeBs #lists them in order of loadedness.
+
+a4 abug -l Abuild.1234955.log -p EventMgr -s 'Autobuild failure with error FAIL:
+test/EventThrashActionTest.py' "failed tests: test/EventThrashActionTest.py"
+
+" in /RPMS and /SRPMS for error: Cannot create/verify /RPMS/repodata
+sudo chown -R user ./
+
+" Integrate changes from other project
+a4 project integrate 2012.adityavd.arad -p <yourProject>
+
+" a4 stress
+ls -1 ptest/Eacl* > foo.sh
+a4 stress -s bash -e foo.sh
+(the "-e" flag causes foo.sh to exit as soon as any test gets an
+error, which I assume is what you want given "-s").
+
+'Art run' can take multiple tests.
+a4 stress -s Art run ptest/EAcl*
+
+Art macphyconc -b EOS-4.9.6-dev dutName
+
+Art set formMlagsDefault  False "before running art sanitize on mlag dut
+MLAGDUT_FORCEPOWER=1 Art on
+Art sanitize --project 2011.arad
+
+# Check autotest failures on given dut
+ap autotest -d tg206 -m 3  -p 2010.EOS -t checkt
+
+# Adding new file / directory
+- Update 'configure.ac'
+- Update Amake-manifest
+
+
+# Filing abug
+a4 abug -p FocalPoint -t FocalPoint/SonomaLearning001.py -s "SonomaLearning001.py failed with AssertionError" "File \"/bld/FocalPoint/Artools-rpmbuild/FocalPoint-1.4.0/test/SonomaLearning001.py.{1,100}assert attempts < 3.{1,50}AssertionError" -l Abuild.log.1687952 
+
+===== new user account ===
+a4 account add <user>
+sudo passwd <user>
+
+===== add following line in settings for no breadth test ====
+#add in your project settings file and kick off abuild. This way, no (breadth ) test
+#is done and u get a fresh set of rpms which u can then use for a4 update.
+buildCommand='a4 make --parallel=AUTO --keep-going -p ALL product-nocheck'
+
+buildCommand='a4 make --parallel=AUTO -p glibc -rd product-nocheck && a4 make --genDeps=no --parallel=AUTO -p ALL product-nocheck'
+
+#You can skip the tests and pylint with:
+a4 project setting buildCommand='a4 make --parallel=AUTO -p ALL product-nocheck' a4PylintEnabled=False
+
+===== running command as different user =====
+AROSTEST_USER=xyz Art newimage

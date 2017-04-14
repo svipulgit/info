@@ -1,0 +1,38 @@
+Get all reg dump - 
+platform arad Arad3/0 diag log file=/tmp/learning_credit_issue.txt on
+
+platform arad Arad3/0 diag g *
+platform arad Arad3/0 diag g * debug
+platform Arad Arad3/3 diag dump raw EGQ
+
+
+ppd_api diag...
+
+received packet info get
+parsing info get
+termination ifo get
+db lem lkup info get - lkup_num 0
+mode info set - flavor raw/none # change format of output
+frwrd lkup info get
+
+frwrd_lpm_lkup_get / # this prints list of params
+
+acc_pb_pp reg_access_... signal get
+
+fdt
+
+fp packet_diag_get (field processor - it is pmf in arad).
+
+traps info get
+
+mode info set - flavor - clear on get
+traps info get
+
+encap info get 
+
+load-balancing key
+?
+
+db lif lkup info get
+
+

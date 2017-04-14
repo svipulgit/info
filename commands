@@ -1,0 +1,236 @@
+^^^^^^^ Misc
+===========
+sudo lsof 2>/dev/null | grep xyz
+
+sudo /usr/bin/FixIptables.sh
+
+sudo yum install --enablerepo=* xterm
+VERIFY=1 TRACE=PimCliTestLib/*,PimTestLib/*,PimTests/* ./PimBasicTest.py 
+
+a4 bugs -qb 11706 -b 11705 -b 10393 | grep -v '\-dev' | grep -v 'maintainers' | awk '{print $2}' | sort | uniq -c | sort -r | awk '{print $2}' | xargs a4 users | grep 'no such'
+
+%post-review < changelist # >        // post a review board for changelist
+%post-review -r  < changelist # > // update a review board with new changes
+
+killall -r Cli
+
+pstree -alp
+pstree -pal
+
+ps  -a -O cgroup
+tcpdump -i vlan2573 -vv 
+# capture LACP packets
+tcpdump -i et6_10 -w /mnt/flash/lacp.pcap ether dst host 01:80:c2:00:00:02 &
+
+watch -d -n 1 head /proc/<xx>-dma
+
+# Check memory usage of proces with pid
+bash sudo grep VmSize /proc/2683/status
+VmSize:      5216 kB
+
+grep -lR "parent='ca.berkeley-dev'" * | xargs grep "autobuild=" | grep -c always
+
+^^^^^^^ Bugs
+===========
+a4 newbug -p Petra -c fabric -s "Implement per SandSlice Audit-interval" 
+
+
+^^^^^^^ Build
+===========
+
+sudo swi rpm /images/EOS.swi -U /RPMS/Eos.i686.rpm
+
+^^^^^^^ Debugging
+===========
+
+NOPDB=1 
+
+trace SandSlice-Fabric1 setting HwShadow/80
+trace SandSlice-Fabric1 setting SandChipHam/*
+
+less dmesg
+
+cat /etc/swi-version
+
+cat /var/log/NorCalInit
+cat /var/log/EosInit 
+cat /etc/fdl 
+cat /etc/Eos-release 
+
+cd /mnt/flash
+swi info EOS.swi 
+cat /etc/fdl 
+
+^^^^^^^ RPM
+===========
+
+
+# remove rpm
+sudo rpm -e Artools --nodeps 
+a4 yum remove -y Artools*
+
+# install rpm
+#sudo rpm -ivh Artools
+
+# Find package which contains this file
+rpm -qf /usr/lib/python2.7/site-packages/CliPlugin/FileCli.py
+
+# Find full rpm dependency list
+rpm --queryformat "[%{=NAME} %{REQUIRES}\n]" -qa > tmp/rpm-list
+awk '$2 == "ghostscript"' tmp/rpm-list
+
+^^^^^^^ DUT
+===========
+
+netnfs ribd cliribd
+
+~/test @bs303.sjc% tacc f32.tac
+~/test @bs303.sjc% gcc -fPIC -c f32.cpp 
+~/test @bs303.sjc% gcc -shared -o libF32.so f32.o -ltac
+~/test @bs303.sjc% python
+>>> import Tac
+>>> Tac.dlopen('libF32.so')
+155155200
+>>> a = Tac.newInstance('SomeType')
+>>> dir(a)
+['__class__', '__cmp__', '__delattr__', '__doc__', '__eq__', '__format__',
+'__getattribute__', '__hash__', '__init__', '__module__', '__new__',
+'__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__',
+'__slots__', '__str__', '__subclasshook__', '_getmethod', 'addFloat',
+'attrProperty', 'attributes', 'attributes_', 'ptr_', 'tacType']
+>>> a.attributes
+frozenset(['addFloat'])
+
+
+
+Abuild tips
+===========
+- abuild web link!!
+  - choose your project from "Project" pulldown.
+  - shows abuild history for the project
+  - shows "changes" to the project, eg, changes submitted to it.
+      ** find this useful when you shared project with other people**
+
+- keep the abuild workspace ( for debug, etc ):
+  - from the abuild web link:
+     find entry for the build: <change#>, find log, find build-server: <bs>
+  - a4 ssh to the <bs>
+  - goto "/var/Abuild/<project-name>/<change#>", ie the root of workspace
+    sudo vi keep  # add file named keep, put your usr id to it
+                  # this will prevent abuild to delete the workspace
+                  # after certain time.
+  - use it as your own workspace
+  - when you are done, remove the file.
+
+- control of abuild parameters
+  *** with care and only if needed ***
+  - edit /eng/project/<your-project>/inherited
+    eg. change string "a4 make --parallel=AUTO -p ALL product'
+      same output as "buildCommand" in "a4 project show"
+
+
+
+==================
+DNS Config
+P4PORT=172.22.34.12:1666 a4 print
+//conf/dns-sjc2/etc/bind/hosts-sjc.aristanetworks.com | more
+
+
+========= Pin dut to specific autotest plan ============
+
+1) Change //eng/autotest/plan/aradPatch to have its dut as yo618, rather than
+yo616
+
+2) In autotest admin, go to dutdrivers. I put yo616 back onto scheduled
+ElCapitan-noSand, and yo618 to scheduled 2011-aradPatch.
+
+3) Clear currently scheduled stuff 'ScheduleTest --clear 2011.arad-patch'
+
+4) Run the test plan to reschedule. './aradPatch 2011.arad-patch'
+====== Manually schedule autotest ===
+# AutoTest -d lf115 --filter="^CpuFabricTest/CpuFabricCliTest.py" --notify=svipul --skipTestbedCheck -n 2 -a --logDir=/tmp/logs/
+AutoTest --notify=svipul --skipTestbedCheck -a --logDir=/tmp/logs/ -n 10 -t 10000 --algorithm=fixed -d xxx --testListFile=test_list1
+=============== from DD ==============
+
+======= mlag dut ===
+Art mlag split ml117
+Art mlag form ml117
+
+==== oprofile ===
+opcontrol --deinit
+cat /proc/sys/kernel/nmi_watchdog
+echo 0 > /proc/sys/kernel/nmi_watchdog
+grep libSandTopoAgent.so.0.0.0 oprofile_pvst_200_vlans.log  | awk '{ print $3 }'
+===============
+
+====== Acons check for topoLib ports =====
+/ar/SandTopo/SandTopo/vlanStatusDir/vlanStatus/2/vlanPortStatus
+/ar/SandMcast/SandMcast/vlanStatusDir/vlanStatus/2/vlanPortStatus
+
+/ar/SandTopo/SandTopo/agentSm/lagPortBitVector/2
+/ar/SandTopo/SandTopo/agentSm/vlanPortBitVector/2
+/ar/SandTopo/SandTopo/agentSm/topoPortBitVector/2
+$ _.dataByFapId(13)
+/ar/SandTopo/SandTopo/topoSchanSm/hwShadow/table/vlanTableShadow
+$ hex( _.entryData(13, 2) )
+====
+
+==== tacc compile
+
+tacc +ntd-N -I/usr/include/python2.7 -Isrc-includes -Igenerated-includes -I/usr/include -I./DuneDriver SandCellLocal.tac
+
+/bin/sh ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I/usr/include/python2.7 -Isrc-includes -Igenerated-includes -I/usr/include -I./DuneDriver -DTAC_HIDE_OLD_ITER -Wextra -Wall -Werror -Wno-unused-parameter  -std=gnu++0x -Os -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector -fno-var-tracking -fno-var-tracking-assignments --param=ssp-buffer-size=4 -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -c -o SandCellLocal.lo SandCellLocal.cpp
+
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I/usr/include/python2.7 -Isrc-includes -Igenerated-includes -I/usr/include -I./DuneDriver -DTAC_HIDE_OLD_ITER -Wextra -Wall -Werror -Wno-unused-parameter -std=gnu++0x -Os -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector -fno-var-tracking -fno-var-tracking-assignments --param=ssp-buffer-size=4 -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -c SandCellLocal.cpp  -fPIC -DPIC -o .libs/SandCellLocal.o
+
+==== Update tag on all build servers starting with 3 ===
+pdsh -w "bs3??" "<command to add tag>"
+
+pdsh -w bs[301-400] 'sudo chmod o+w /usr/lib/python2.7/site-packages/Abuild.py'
+
+for i in `pdsh -w bs[301-400] 'rpm -q Artools' 2> /dev/null | grep 1161646 | cut -d':' -f 1`; do a4 scp /usr/lib/python2.7/site-packages/Abuild.py
+$i:/usr/lib/python2.7/site-packages/Abuild.py; done
+
+pdsh -w bs[301-400] 'sudo chmod o-w /usr/lib/python2.7/site-packages/Abuild.py'
+==========
+screen -e^oa -S serial -fn /dev/tty.usbserial 9600,cs8
+==========
+
+Recreate mem leak failures in Abuild:
+ABUILD=1 or ARTEST_HEAPCHECK=1
+========
+event-handler updateLocktime
+   trigger on-intf Vlan100 operstatus
+   action bash sudo bash -c "echo 10 > /proc/sys/net/ipv4/neigh/vlan100/locktime"
+
+====
+shutdown all interface
+sed  -e '/interface Ethernet/a \   shutdown' startup-config > startup-config-shut
+===
+# Publishing build to dist:
+a4 ssh bsxxx
+cd /var/Abuild/<project>/latest
+export P4USER=arastra
+BuildPublish <project> <platform (usually i386_14)> <change>
+===
+python -m Acons
+python -c "import ObjectUsage; ObjectUsage.main()"
+===
+# getting older images from dist
+wget http://dist/release/co.denver/final/images/EOS.swi
+===
+# accessing alpha switches
+a4 ssh alpha-ldap
+ssh bonn
+===
+sudo TRACE=CliHelper/*,CliCommonHelper/*,LpmSm/* /usr/bin/SandL3UnicastCliUtil --ip-route --chipType=arad
+/usr/bin/SandL3UnicastCliUtil --lemDump=Arad0 --pollEntire --chipType=arad
+===
+a4 patternrule add /src/gated/gated-ctk/src/aspath/aspath_bgp.c Bgp/*InplaceAdjReplace* --function-pattern bgp_ecmp_compute_
+a4 patternrule add /src/gated/gated-ctk/src/aspath/aspath_bgp.c "--type stest -S Bgp/InplaceAdjReplace" --function-pattern bgp_ecmp_compute_
+
+Running all stests
+=================
+NOPDB=1 a4 make -j12 -p Bgp stests 2>&1 | tee /tmp/bgp-stests.log
+a4 logscan -n -l /tmp/bgp-stests.log
+NOPDB=1 a4 make -j3 -p Bgp TESTS="stest/BgpRRIntegCommunityTest.py stest/BgpGRSpeakerBasicTest.py" check 2>&1 | tee /tmp/bgp-some-stests.log

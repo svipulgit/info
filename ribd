@@ -1,0 +1,2 @@
+ip nens list
+ip netns exec ns-vrf_01 RibdShowTech

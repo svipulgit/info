@@ -1,0 +1,17 @@
+$ cd ..
+/ar/Sysdb/bridging/input/config/cli/fdbConfig/3/configuredHost is
+<Tac._Collection /ar/Sysdb/bridging/input/config/cli.fdbConfig/3.configuredHost>
+    00:01:00:02:00:03
+
+$ cd 00:01:00:02:00:03/
+/ar/Sysdb/bridging/input/config/cli/fdbConfig/3/configuredHost/00:01:00:02:00:03 is <Value Bridging::ConfiguredHost>
+address.   entryType. intf.      
+
+$ ls -l
+/ar/Sysdb/bridging/input/config/cli/fdbConfig/3/configuredHost/00:01:00:02:00:03 is <Value Bridging::ConfiguredHost>
+  address                 : 00:01:00:02:00:03
+  entryType               : configuredStaticMac
+  intf                    : Ethernet4/1
+$ 
+
+$ _.configuredHost.addMember( Tac.Value("Bridging::ConfiguredHost", address="00:01:00:02:11:22",entryType="configuredStaticMac",intf="Cpu"))

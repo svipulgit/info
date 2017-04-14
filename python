@@ -1,0 +1,238 @@
+#prints local variables at pdb prompt
+pp locals()
+args
+pp vars(self.dut) - is shortcut for pp self.dut_.__dict__
+
+sys._getframe() - python frame / stack object
+
+from scapy.all import *
+Ether(pkt).show()
+
+======
+>>> import Tac
+import Tac
+>>> a = Tac.Value( "Arnet::EthAddr" )
+a = Tac.Value( "Arnet::EthAddr" )
+>>> a.stringValue = "01:02:03:04:05:06"
+a.stringValue = "01:02:03:04:05:06"
+>>> a.word[0]
+a.word[0]
+258
+>>> hex( 258)
+hex( 258)
+'0x102'
+>>>
+======
+>>> for i in t.fabriccards[5].fe600s[0].sm.debugSm.hwShadow.chipMemory:
+...   print t.fabriccards[5].fe600s[0].sm.debugSm.hwShadow.chipMemory[i].entries
+
+>>> 
+>>> for i in t.fabriccards[5].fe600s[0].sm.debugSm.hwShadow.chipMemory:
+...   print i
+... 
+65536
+131072
+196608
+262144
+327680
+393216
+458752
+524288
+589824
+655360
+720896
+>>> print t.fabriccards[5].fe600s[0].sm.debugSm.hwShadow.chipMemory[524288].shadow
+<PtrInterfaceProxy of entity('/ar/SandSlice/SandSlice').agentSm.fe600Sm[ 'Fabric5-Fe600-0' ].debugSm.hwShadow.chipMemory[ 524288 ].shadow at 0x9f36f40>
+>>> 
+>>> int_ptr = ctypes.POINTER(ctypes.c_long)
+>>> sp = int_ptr.from_address(0x9f36f40)
+>>> print hex( sp[0])
+0x9f36ec0
+
+
+
+memoryAccessStr = "t.fabriccards[%s].fe600s[%s].hal.rtp.mct%s_tbl[%s]"           
+'''                                                                              
+cli.runCmd( ("""echo '%sprint """ % pythonSetup) + (memoryAccessStr %            
+                                                    (cardIndex, chipIndex,       
+                                                     tableIndex, entryIndex)) +  
+           "' > /tmp/testfile" )                                                 
+'''                
+
+$ sum( ( len(elb.buffer) for elb in _.entityLogBlock.itervalues() ) )
+35403776
+
+
+Acons:
+/ar/Sysdb/hardware/sand/system/config/cli
+/ar/SandSlice/SandSlice/agentSm/fe600Sm/Fabric1-Fe600-0/debugSm/agentSm/systemSandConfig/
+
+python:
+t.fabriccards[1].fe600s[0].sm.debugSm.agentSm.systemSandConfig.staticTableAuditPeriod
+
+
+#!/usr/bin/env python
+import PyClient, sys
+pc = PyClient.PyClient( "ar", "SandSlice-%s" %( sys.argv[ 1 ] ) )
+agentRoot = pc.root()[ "ar" ][ "SandSlice" ]
+agentRoot[ "redundancyStatus" ].mode = "switchover"
+agentRoot[ "redundancyStatus" ].switchoverStage["NonCriticalServices"] = True
+agentRoot[ "redundancyStatus" ].mode = "active"
+
+
+python -c "import ArosTest; print ArosTest.edutForDut( ArosTest.getDut( 'tg204') ).forwardingPlaneAgents()"
+['Sand', 'SandSlice-Linecard5', 'SandSlice-Linecard6', 'SandSlice-Fabric1',
+'SandSlice-Fabric2', 'SandSlice-Fabric3', 'SandSlice-Fabric4',
+'SandSlice-Fabric5', 'SandSlice-Fabric6']
+
+Alternate access using ArosTest:
+import ArosTest
+dut = ArosTest.edutForDut( ArosTest.getDut( 'tg203') )
+card = dut.insertedCards()[0]
+
+^^^^^^^^^^^ PyClient 
+From the build server
+pc = PyClient.PyClient( 'ar', 'Sysdb', host='172.17.9.133', port=50100 )
+pc.root()
+
+====
+pc = PyClient.PyClient( "ar", 'Sysdb' )
+
+print pc.root()
+<EntityProxy />
+ar = pc.root()
+print ar.items()
+
+
+a1 = ar['ar']['Sysdb']
+a1 = ar['ar']['Sysdb']['hardware']['sand']['system']['config']  
+cli = a1['cli']
+
+print cli.staticTableAuditEnabled 
+True
+print cli.staticTableAuditPeriod 
+1800.0
+
+print cli.staticTableAuditPeriodPerSlice.items()
+[('Fabric1', 1200.0), ('Fabric2', 600.0)]
+
+
+
+======== Breadth test
+p self.ethPhyIntfStatusDir
+intfStatus = self.ethPhyIntfStatusDir.intfStatus[ "Ethernet3/1" ]
+print intfStatus.linkStatus
+print intfStatus.rawLinkStatus
+
+
+(Pdb) root = em.root()
+(Pdb) sandCliConfig = root.entity[ 'hardware/sand/system/config/cli' ] 
+
+(Pdb) p self.testCtx.ethPhyIntfStatusDir
+entity('/SandFapBasicVlanTest/Sysdb/interface/status/eth/phy')
+
+
+fc = root.entity[ '/SandFapBasicVlanTest' ] 
+
+(Pdb) print fc.items()
+[('SysdbIntf', entity('/SandFapBasicVlanTest/SysdbIntf')), ('Sysdb', entity('/SandFapBasicVlanTest/Sysdb')) ..
+
+You can PyClient to Sysdb directly and it does not need any mounting, as far
+as I know. Something like
+
+>>> import PyClient
+>>> pc = PyClient.PyClient( "ar", "Sysdb" )
+>>> pc.root()
+entity('/')
+>>> intfDir = pc.root().entity[ 'ar/Sysdb/interface' ]
+>>> intfDir.keys()
+['counter', 'errdisable', 'status', 'multicastGroups', 'config']
+>>> intfDir[ 'errdisable' ].keys()
+['causegroup', 'uplinkFailureDetection', 'cause', 'status',
+'linkFlapConfig', 'config']
+
+
+Another alternative is to use EntityManager
+
+import EntityManager, Tac
+em = EntityManager.Sysdb( 'ar' )
+mg = em.mountGroup()
+rc = mg.mount( 'routing/config', "Routing::Config", 'w' )
+mg.close( blocking=True )
+....
+Tac.runActitivties()
+
+==========
+p self.pyClient.eval( "len(
+Tac.entityCollection('/ar/Sysdb/bridging/config.vlanConfig') )" )
+
+p self.pyClient.eval( "len (
+Tac.root['ar']['Sysdb']['bridging']['config'].vlanConfig ) " )
+
+
+=========== Enable Tracing during ptest ======
+(Pdb)
+Tracing.traceSettingIs('AgentMonitor/01,EbraCliTestLib/0,EosDeviceSand/*,EthIntfTestLib/0167,ArosTest/0,StaticRouting/0,EbraBridgeTestLib/01,EbraBridgeTests/01')
+(Pdb)
+Tracing.traceSetting()'AgentMonitor/01,EbraCliTestLib/0,EosDeviceSand/*,EthIntfTestLib/0167,ArosTest/0,StaticRouting/0,EbraBridgeTestLib/01,EbraBridgeTests/01'
+
+(Pdb) t1(Tracing.HexDump( packet ))
+2013-01-22 10:34:43.311660 19324 EbraBridgeTests      1     1 Data (length 92):
+    0000    ffffffff ffff00aa aaaaaaaa 81000000    ................
+    0010    81000000 12345468 69732069 73206120    .....4This is a 
+    0020    646f7562 6c652d74 61676765 64206672    double-tagged fr
+    0030    616d6520 77697468 206f7574 65722070    ame with outer p
+    0040    72696f72 69747920 74616778 78787878    riority tagxxxxx
+    0050    78787878 78787878 78787878             xxxxxxxxxxxx
+
+============ Acons updating members ===========
+/ar/SandFap/SandFap/sliceSm/routedPortSandSliceDmaSm/sandCellDmaConfig/routedPort/1006 is <Value Hardware::Sand::Slice::SandSliceDmaConfig::RoutedPort>
+  deleted                 : False
+  devName                 : et3_3_1
+  vlanId                  : 1006
+
+/ar/SandFap/SandFap/sliceSm/routedPortSandSliceDmaSm/sandCellDmaConfig/routedPort is <Tac._Collection /orphanage/3427/0xb093338_SandSliceDmaConfig.routedPort>
+    1006
+$ _[1006]
+Value('Hardware::Sand::Slice::SandSliceDmaConfig::RoutedPort', ** {'deleted': False, 'vlanId': 1006, 'devName': 'et3_3_1'})
+
+$ del _[1006]
+
+rp = Tac.Type('Hardware::Sand::Slice::SandSliceDmaConfig::RoutedPort')
+
+myrp = rp('et3_3_1', 1006)
+
+_.addMember(myrp)
+
+
+$ myrp.deleted=True
+$ myrp
+Value('Hardware::Sand::Slice::SandSliceDmaConfig::RoutedPort', ** {'deleted': True, 'vlanId': 1006, 'devName': 'et3_3_1'})
+
+_.addMember(myrp)
+
+========= print current time =====
+time.strftime("%c")
+========= start interactive python at Pdb prompt ======
+!import code; code.interact(local=vars())
+
+==========
+# printing route in lpm
+/ar/SandL3Unicast/SandL3Unicast/agentSm/aradAgent/aradL3Sm/lpmSm/config
+rKey=[ k for k in _.route.keys() if k.addr == 0xc0c90180 ]
+rKey
+[Value('Hardware::SandL3Unicast::Lpm::Prefix', ** {'addr': 3234398592L, 'len': 26, 'vrf': 0})]
+_.route[ rKey[ 0 ] ]
+Value('Hardware::SandL3Unicast::Lpm::FecId', ** {'fecId': 3289})
+
+# printing fec
+$ rk = _.route.keys()[0]
+$ rk
+Value('Ale::EgressPrefixIndex', ** {'vrfId': 0, 'prefix': Value('Arnet::Prefix', ** {'len': 22, 'address': '50.13.172.0'})})
+
+$ rk = Tac.Value( 'Ale::EgressPrefixIndex', ** {'vrfId': 0, 'prefix': Tac.Value('Arnet::Prefix', ** {'len': 24, 'address': '192.168.16.0'})} )
+$ rf = _.route[rk]
+$ rf
+$ rf.viaInfo.ecmpSz()
+
+

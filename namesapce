@@ -1,0 +1,63 @@
+bash sudo ip netns exec ns-vrf2 tcpdump -i vlan692
+=============
+chns
+sudo netnsd -d <name>
+netns -l
+netnfs <name>
+
+
+sudo netns-connect foo <name1> <name2>
+
+
+netns <name1> ifconfig -a
+netns <name2> ifconfig -a
+
+sudo netns -k (kill)
+ 
+isolate ps
+
+
+art attach host1
+sudo ip addr add 10.1.1.1/25 dev eth0
+
+art ifconnect host1:eth0 host2:eth0
+art ifconnect tg203:Et3/1/1 rtr19:Et1
+
+HostDutServices.py
+PhyContry --help
+
+Art hlep dutspec (list all available duts)
+
+=================
+
+netns rtr13 DumpDb tbt://localhost:9999
+
+============running a new agent in Workspace dut ====
+agentsToRun is not implemented for WorkspaceDuts (however it is implemented for other kinds of duts).
+
+You can add your agent to the residentAgents list of a dut's HwDesc defined in {Yosemite,Sequoia,Napa,Bodega,PtReyes}/ArosTestPlugin/*HwDesc.py. For a modular dut, you will want to add it to the supervisor's list of resident agents.
+
+===============
+what is the correct way to start/stop agents on a namespace dut?
+For standalone, you can run "Art set agentsToRun <agents>"  before running "Art on".
+===============
+Kill corrupted namespace dut:
+sudo netns -k DUTNAME
+sudo netns -k rtr0
+rm -rf /tmp/ArosTest/rtr0.*
+===============
+Enter namespace of the btest with pid 47802
+netns Artest-47802
+
+/src/Sysdb/ShowMountStatus.py --sysname=etba1 --agentname=CliSessionMgr
+===============
+# Enter stest namespace dut
+# waiting for agent localhost:ip1.Sysdb to start ......ok
+netns Artest-33408
+netns -l
+Art info bgprtr1 | grep sysdb
+Art info ip1 | grep sysdb
+cat /proc/net/unix
+Cli -A -k sysdb9513 -s ip1
+or
+FastCli --sysname=rtr1

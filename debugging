@@ -1,0 +1,38 @@
+from SandTestLib import *
+>>> t=tree('ar')
+
+if you want all linecards :
+tree('ar', desiredLinecards="All" )
+
+if you want all fabric cards
+tree('ar', desiredFabriccards="All" )
+
+If you want just one card:
+tree('ar', desiredFabriccards="Fabric1" )
+
+>>> t.linecards
+[None, None, None, None, None, <SandTestLib.Linecard object at 0xa44b14c>, <SandTestLib.Linecard object at 0xa44b06c>]
+
+>>> t.fabriccards
+[None, <SandTestLib.Fabriccard object at 0xa44b10c>, <SandTestLib.Fabriccard object at 0xa44b12c>, <SandTestLib.Fabriccard object at 0xa44b16c>, <SandTestLib.Fabriccard object at 0xa44b1cc>, <SandTestLib.Fabriccard object at 0xa44b18c>, <SandTestLib.Fabriccard object at 0xa44b02c>]
+
+>>> print t.fabriccards[1].fe600s[0].hal
+ccs[2]
+dcm                  0x600
+dcq[4]
+eci                  0x0
+mac[8]
+mcc                  0x3400
+rtp                  0x400
+serdes               
+
+>>> print t.fabriccards[1].fe600s[0].hal.rtp
+
+>>> t.fabriccards[1].fe600s[0].hal.rtp.multi_cast_table_update_tbl[1] = 0xaaaaaaaa
+>>> print t.fabriccards[1].fe600s[0].hal.rtp.mct0_tbl[1]
+2863311530 (0xaaaaaaaa)
+
+==============
+make backtrace readable:
+cat crash1.txt | c++filt
+==============

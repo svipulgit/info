@@ -1,0 +1,9 @@
+# …or create a new repository on the command line
+
+echo "# helloTest" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/svipulgit/helloTest.git
+git remote add origin git@github.com:svipulgit/googlescripts.git
+git push -u origin master

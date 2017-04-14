@@ -1,0 +1,8 @@
+To generate V6 multicast packets:
+
+sudo ethxmit -V 6 -D 33:33:ff:00:00:01 -S a6:35:ec:f5:9e:04 -e 0x86dd --ip-src=3000:629f:52a4:40::2 --ip-dst=ff02::1:ff00:1 -s 1000 -n 1000 yo618-et3_43
+
+# ARP request
+sudo ethxmit --arp=request --smac=00:00:02:02:02:31 --dmac=ff:ff:ff:ff:ff:ff --ip-src=2.2.2.31 --ip-dst=2.2.2.1 ti225-et3
+
+sudo ethxmit -S "00:1c:73:8e:a8:b3" --arp=ARP --data-type=raw --data-value=0001080006040001001c738ea8b30a0101200000000000000a010117000000000000000000000000000000000000 -n 1 lf113-et23

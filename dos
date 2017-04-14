@@ -1,0 +1,29 @@
+./dsh --no-autodetect --prefdl=/mnt/flash/prefdl
+
+put the card under diag mode. so do "m8 diag <card> on", where <card> is line[3-10] / fabric[1-6].
+m8 idprom -d read supervisor1
+
+m8 idprom read chassis1 > /tmp/prefdl
+m8 idprom -d read chassis1 > /tmp/prefdl
+prefdl -d /tmp/prefdl
+genfdl --help
+
+genfdl --prefdl
+It's better to pull a 2010.strata.aho tree and a4 make  -r -p DosDocumentation.
+
+I then copy the docs to my laptop using:
+
+alias getdocs='(cd ~/Desktop; scp
+basil:2006.aho/bld/DosDocumentation/dos-documentation.tar.bz2 .; tar xzf
+dos-documentation.tar.bz2)'
+
+ls -d
+
+
+
+(Pdb) DosLib.Log.basicConfig()
+(Pdb) logger.error("Test Error")
+Test Error
+(Pdb) import logging
+(Pdb) logger.setLevel( logging.DEBUG )
+(Pdb) pca9555.scan()

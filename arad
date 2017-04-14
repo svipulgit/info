@@ -1,0 +1,76 @@
+StrataApi/sdk/src/bcm/dispatch.c - dispatcher functions
+StrataApi/sdk/src/bcm/dpp/* - actual function
+
+StrataApi/sdk/src/soc/dpp/drv.c - soc_dpp_arad_init (ignore _pb functions)
+
+StrataApi/sdk/include/soc/mcm/allenum.h - All enum
+
+GPORT=0x800f012 - Arad8/0, FapPort 18 - Et8/1/17
+
+Diag command:
+StrataApi/sdk/src/appl/diag/dcmn/cmdlist.c
+
+# simulate linecard removal and insertion
+bash sudo m8 power cycle <x> standby
+
+
+bash commands:
+m8 scan
+m8 idprom read line4
+0002PCA001770105JAS12190025KVN05000c001c730063e302000e201205292038330C0006MtDana03000fDCS-7500S-72-LC0000008DCB05A9 - this is MtDana
+
+
+
+localhost#bash sudo su
+bash-4.1# ls /var/log/agents
+Aaa-1507    Fru-1446       Mirroring-1504    Stp-1480
+Acl-1476    IgmpSnooping-1512  PhyEthtool-1529     StpTopology-1472
+AgentMonitor-1499  Ira-1484         PortSec-1479      SuperServer-1470
+Arp-1491    Lag-1474       PowerManager-1471    Sysdb-1444
+Ebra-1530      Launcher-1447      ProcMgr-worker-1443  Thermostat-1494
+EventMon-1498     LedPolicy-1485     Qos-1492         TopoAgent-1482
+FastClid-1445     Lldp-1469         Rib-1510
+bash-4.1# tail -f /var/log/agents/Fru
+tail: cannot open `/var/log/agents/Fru' for reading: No such file or directory
+bash-4.1# tail -f /var/log/agents/Fru-1446
+===== Output from /usr/bin/Fru  (PID=1446) started Sep 14 23:10:23 ===
+waiting for Sysdb init .............ok
+^C
+bash-4.1# exit
+exit
+'sudo su' returned error code:130
+localhost#conf t
+localhost(config)#trace Fru setting Fdl/* 
+localhost(config)#end
+localhost#bash sudo su
+bash-4.1# ps -ef | grep Fru
+root      1446  1443  0 Sep14 ?        00:00:08 Fru             -d -i --dlopen
+-p -f  -l libLoadDynamicLibs.so procmgr libProcMgrSetup.so --daemonize
+root      5840  5834  0 01:23 ttyS0    00:00:00 grep Fru
+bash-4.1# kill 1446
+bash-4.1# ps -ef | grep Fru
+root      5843  1443 60 01:23 ?        00:00:02 Fru             -d -i --dlopen
+-p -f  -l libLoadDynamicLibs.so procmgr libProcMgrSetup.so --daemonize
+root      5847  5834  0 01:23 ttyS0    00:00:00 grep Fru
+bash-4.1# tail -f /var/log/agents/Fru-5843
+===== Output from /usr/bin/Fru  (PID=5843) started Sep 15 01:23:55 ===
+^C
+bash-4.1# NorCalInit
+Checking to see if redrum needs to be upgraded
+Version in hardware is 63 , have version 63 locally
+redrum does not need to be upgraded
+Sat Sep 15 01:24:19 2012 identifyCell: cellType: supervisor cellId: 1 slotId: 1
+
+=============================
+You can also turn on the following debug options to trace all register/table configurations.
+
+// Disable all background threads to prevent flood of debug reg dumps
+counter off
+linkscan off
+deinit rx_los
+ctrp suspend
+
+// Enable reg/mem access dumps
+debug +reg
+debug +mem
+=============================

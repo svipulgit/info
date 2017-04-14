@@ -1,0 +1,67 @@
+export ARTEST_RANDSEED=1363287914
+#for breadth test - TEST_RANDSEED - doesn't work
+AROSTEST_DUT=so404 AROSTEST_USER=nkitchen Art pyshell
+len(edut.dut_.ports())
+
+AROSTEST_SKIP=endTestCleanup EBRATEST_SKIP=intfFlush
+AROSTEST_SKIP=all EBRATEST_SKIP=all    // run 'Art cleanconfig' later
+
+
+# Various counters
+ctx.device().globalConfigCmdIs( "clear counters session" )
+ctx.device().globalConfigCmdIs( "platform arad diag diag counters g nz" )
+
+ctx.device().globalConfigCmdIs( "show interfaces counters | nz" )
+ctx.device().globalConfigCmdIs( "platform arad diag g EGQ_ERPP_DISCARD_INT_REG | i =1" )
+ctx.device().globalConfigCmdIs( "platform arad diag g EGQ_ERPP_DISCARD_INT_REG_2 | i =1" )
+ctx.device().globalConfigCmdIs( "platform arad diag g EGQ_PKT_REAS_INT_REG | i =1" )
+ctx.device().globalConfigCmdIs( "show platform arad counters | nz" )
+ctx.device().globalConfigCmdIs( "platform arad diag diag counters g nz" )
+
+
+Enable Tracing of pexpect
+===============================
+Tracing.traceSettingIs( 'pexpect/*')
+
+Old:
++++ src/Ebra/test/EbraBridgeTestLib.py 2013-03-16 11:01:48.378719839 -0700
++ArosTest.desiredTracingIs( 'EbraBridgeTestLib/01,pexpect/012' )
+
+
+# Reduce cleanup time
+===============================
++++ src/Ebra/test/EbraBridgeTestLib.py 2013-03-16 11:01:48.378719839 -0700
+@@ -661,9 +661,9 @@
+          self.device().showCmdIs( "show mac address-table" )
+
++      #self.checkMacPhyConcs()
++      #self._verifyPacketPathIntegrity( test_ )
++      #self._checkCounters( testFailed )
+
+================================
+Art Pyshell for linerate traffic
+
+sudo Art pyshell
+
+from EbraBridgeTestLib import *
+ctx = productTestContext( edut )
+ctx.setBridgeIntfs()
+intfs = ctx.bridgeIntfs()
+linerateIntfs=[ intf for intf in intfs if intf.partnerLinerateTrafficGenerator() ]
+frame = etherFrame( '00:bb:bb:bb:bb:01','ff:ff:ff:ff:ff:ff',size=200)
+for intf in linerateIntfs: print intf.name()
+
+>> lcIntfs[ 0 ].startLinerateTraffic( frames=[ frame ], rate=99.0 )
+>> lcIntfs[ 0 ].stopLinerateTraffic()
+
+frames = []
+numIntfs = len(linerateIntfs) - 1
+for i in range( numIntfs ):
+  frame = etherFrame( '00:bb:bb:bb:bb:%d' % i, '00:bb:bb:bb:bb:%d' % (i+1), size=500 )
+  frames.append( frame )
+
+for i in range( numIntfs ):
+  linerateIntfs[ i ].startLinerateTraffic( frames=[ frames[i] ], rate=90.0 )
+
+for i in range( numIntfs ):
+  linerateIntfs[ i ].stopLinerateTraffic()

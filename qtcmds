@@ -1,0 +1,8 @@
+
+qtcat --tsc qt/Rib-bgp.qt > bgp
+qtcat --tsc qt/Rib-fwk.qt > fwk
+qtcat --tsc qt/Rib-convergence.qt > conv
+
+qtcat --tsc qt/Rib-bgp-apple_vrf.qt > vbgp
+qtcat --tsc qt/Rib-fwk-apple_vrf.qt > vfwk
+qtcat --tsc qt/Rib-convergence-apple_vrf.qt > vconv

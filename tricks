@@ -1,0 +1,43 @@
+#/usr/bin/bash
+#Add new file to perforce
+find -type f -name "*" | xargs a4 filelog 2>&1 |  grep "not on client" | sed 's/ - file(s) not on client\.//' | xargs a4 add
+
+#preserve the logs on standby supe we can symlink eos and messages in /var/log to /mnt/flash
+# alternattely /mnt/flash/rc.Eos that sets up /var/log -> /mnt/flash/log 
+/mnt/flash/logsym.sh:
+#!/bin/sh
+touch /mnt/flash/eos
+touch /mnt/flash/messages
+mv /var/log/eos /mnt/flash/eos.orig
+mv /var/log/messages /mnt/flash/messages.orig
+ln -s /mnt/flash/eos /var/log/eos
+ln -s /mnt/flash/messages /var/log/messages
+
+Config:
+!
+event-handler logsym
+   trigger on-boot
+   action bash /mnt/flash/logsym.sh
+!
+
+## command to find how many people have this process running
+for i in `ps gauxwww | grep rtr | grep -v python | grep -v grep | awk '{ print $2 }'`; do   sudo strings /proc/$i/environ | grep SUDO_USER ; done | sort | uniq -c | sort -n
+
+## Sum up particular column
+show interfaces counters rates | nz | grep -v Name | awk '{sum = sum+$8} END {print sum}'
+
+# If .so replaced on dut is for library might need to do 
+sudo nohup ProcMgr restart
+# in case your library is "fast-loaded", e.g. shows up in 
+sudo pmap -x $(pidof netnsd-server)
+
+# Setting agent heartbeat period to large before starting gdb
+agent=Dot1x; sed -i 's/heartbeatPeriod = .*/heartbeatPeriod = 100000/' /etc/ProcMgr.d/run/ownedByLauncher/$agent
+sudo kill -1 $(pidof ProcMgr-work)   ;# tell ProcMgr to re-read the agent configs
+sleep 5; sudo gdb /usr/bin/netnsd $(pidof $agent)
+
+# qtcat for all qt files
+ls *.qt | xargs -I{} qtcat -a -t {} | grep "12:17:4[456789]" >> qlog
+
+# Get file from parent
+a4 print "//src/Bfd/$(a4 project setting | sed -n "s/parent='\(.*\)'/\1/p")/EchoSessionSm.tin@$(cat /eng/project/$(a4 project setting | sed -n 's@Current content of //eng/project/\(.*\)/settings:@\1@p')/syncpoint)" > /tmp/head

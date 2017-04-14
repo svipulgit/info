@@ -1,0 +1,2 @@
+43093 sandl3unicast-dev c/wf  SandL3Unicast-rfe Arad - handle case of V4 routing enabled, but V6 routing disabled
+151356 [systest][BGP v4ov6 nexthop] Command "no ip routing ipv6 interfaces" does not disable the feature on the Arad platform (feature works even when the command is not enabled)

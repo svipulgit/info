@@ -1,0 +1,70 @@
+MemUsage:
+# Acons -f SandTopo
+$ import MemTools as M
+$ fp = file("/tmp/foo","w")
+$ M.dumpHeap( fp )
+$ fp.close()
+===================
+echo 3 > /proc/sys/vm/drop_caches && free -m
+===================
+
+# Generate maps files
+pprof /usr/bin/SandFabric "/tmp/SandFabric.4161._main_-end.heap" --text
+
+# Later use 'a4 debug' to decode traceback
+
+===================
+run the test with ARTEST_HEAPCHECK=1. That'll dump a .heap
+file in /tmp that has all the memory maps and a stacktrace of where
+the leak came from. 
+=================
+
+ObjectUsage -r /ar/SandTopo/SandTopo/ ar SandTopo
+
+=====
+catching memory leaks: GooglePerftools.swix + heapthis + heapcheck (see
+/src/EosExtras/google-perftools-swix and /src/EosExtras/ptest/heapcheck.py)
+=================== Valgrind ========
+
+Art yum setup (from your workspace)
+yum install valgrind (on the dut)
+yum install SandTopo-debuginfo
+valgrind --leac-check=full SandTopo
+======================
+
+[Bug 38959] : Reduce memory foorprint of SandFap
+
+Here is my workflow:
+-------------------
+
+Art yum setup (from your workspace)
+yum install valgrind (on the dut)
+yum install SandTopo-debuginfo (on the dut)
+
+
+service ProcMgr stoppm
+killall SandTopo
+valgrind --tool=memcheck --leak-check=full SandTopo
+
+killall SandFap
+valgrind --tool=massif --threshold=0.4 SandFap --sliceId Linecard3 (or whatever
+linecard you have)
+Once the init is done, hit Ctrl-C
+
+ms_print massif.out (filename has a pid there too) > trace
+
+scp the trace file, and look at it
+
+I have not figure out a good script to scan this file to give us the problem
+areas - but looking at
+the file, you should be able to figure out the problem areas.
+
+BTW - if memory is allocated and then freed, it will still show up in this
+output.
+
+Also - if you notice the top output - SandFap memory usage grows, and eventually
+it starts going
+down (at end of init - probably due to our removing shadows managed by other
+agents, and maybe some
+code in sdk too)
+

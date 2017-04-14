@@ -1,0 +1,15 @@
+a4 yum install -y StrataApi-devel StrataApi-sim
+
+#a4 debuginfo python-2.7-8.fc14.1.x86_64
+a4 debuginfo StrataApi-debuginfo
+
+~/accel/src/StrataApi @bs308.sjc% python
+import AradStrataApiTestLib
+c = AradStrataApiTestLib.AradStrataApiTestContext( 2 )
+import StrataApiNew as sa
+sa.sh_process(0, "pfx", 0)
+ps
+
+
+Another terminal:
+gdb python <pid>
