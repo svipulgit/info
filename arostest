@@ -1,3 +1,4 @@
+export WAITFOR_DEFAULT=40
 export ARTEST_RANDSEED=1363287914
 #for breadth test - TEST_RANDSEED - doesn't work
 AROSTEST_DUT=so404 AROSTEST_USER=nkitchen Art pyshell

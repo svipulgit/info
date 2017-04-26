@@ -218,3 +218,8 @@ a4 project setting buildCommand='a4 make --parallel=AUTO -p ALL product-nocheck'
 
 ===== running command as different user =====
 AROSTEST_USER=xyz Art newimage
+
+===== ==========
+# pull an equivalent workspace at specific change:
+ionice -c 3 a4 newtree --no-src --reuse-client --no-parent-rpms --no-yum-cache --repo http://dist/Abuild/kkofman.noUsb0.0/i386_18/4778423/RPMS/ --change 4778423 <targetDirectory> kkofman.noUsb0.0
+===== ==========

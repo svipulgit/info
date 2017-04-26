@@ -1,3 +1,15 @@
+# initial config
+git config --global user.name sv
+git config --global user.email sv@
+
+# SSH setup
+# https://help.github.com/articles/connecting-to-github-with-ssh/
+ssh-keygen -t rsa -b 4096 -C sv@
+eval "$(ssh-agent -s)"
+ssh-add -k ~/.ssh/id_rsa
+
+git clone git@github.com:svipulgit/info.git
+
 # …or create a new repository on the command line
 
 echo "# helloTest" >> README.md
