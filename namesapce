@@ -60,4 +60,4 @@ Art info ip1 | grep sysdb
 cat /proc/net/unix
 Cli -A -k sysdb9513 -s ip1
 or
-FastCli --sysname=rtr1
+FastCli -A --sysname=rtr1
