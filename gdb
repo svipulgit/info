@@ -262,6 +262,7 @@ function bgpAttach() {
           sudo gdb -e `readlink -f /usr/bin/Bgp` --pid=$pid
         fi
 }
+sudo gdb -e Bgp -c /var/core/core.8838.1494900343.Bgp
 ======
 You can use "set auto-solib-add off" to cut back on what gdb is loading.
 
