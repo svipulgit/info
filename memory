@@ -1,9 +1,8 @@
 MemUsage:
-# Acons -f SandTopo
-$ import MemTools as M
-$ fp = file("/tmp/foo","w")
-$ M.dumpHeap( fp )
-$ fp.close()
+rpm -ivh --nodeps Ark-devel.i686.rpm
+#python -m Acons Bgp
+$ import MemTools
+$ MemTools.dumpHeap( open( '/tmp/outputFile', 'w' ), False )
 ===================
 echo 3 > /proc/sys/vm/drop_caches && free -m
 ===================
