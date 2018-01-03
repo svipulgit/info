@@ -1,10 +1,7 @@
 a4c create -c -p svipul.etcN.0 -b Bgp -b gated -b ArBgp eos-trunk etcN
-a4c create -c -p svipul.task.1 -b Bgp -b gated -b ArBgp eos-trunk task1
-a4 mut clone -c <mutname like et> <dir>
-a4 mut clone -p il.elgin-rel -c elgin elgin
-a4 mut clone -p arbgp-trunk-dmz.common -c ar-conv arconv -b ArBgp -b gated -b Bgp
-a4 mut switch -1
 
+a4c build svipul.xyz.0      -  Build a new image for your project 
+a4c create svipul.xyz.0 xyz - Create new container using above image
 =======
 a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul
 a4 newtree atbu ga.atlanta-bugfix-svipul
@@ -14,14 +11,17 @@ a4 project newpackage Demo
 
 patch -p 1 -i ~/diffs/vxlan4.diff
 
-a4 update
-a4 submit
+mut
+======
+a4 mut clone -c <mutname like et> <dir>
+a4 mut clone -p il.elgin-rel -c elgin elgin
+a4 mut clone -p arbgp-trunk-dmz.common -c ar-conv arconv -b ArBgp -b gated -b Bgp
+a4 mut switch -1
 
 a4 add -t text+x filename
 ====== add following in description to bypass content check ====
 autosubmitted=1
 
-a4 make -p < project >          // all and install
 a4 make -p < project >  product-nocheck        // all and install, install rpms
 
 =======
@@ -31,9 +31,6 @@ b) install Lag's Requires and BuildRequires (a4 make -p Lag all-requires).
  
 Either a) or b) is required for a package's breadth tests to run correctly.
 ========
-
-a4 project setting
-a4 project setting autobuild=0
 
 a4 client
 a4 fstat *  // Dump file info
@@ -224,3 +221,4 @@ AROSTEST_USER=xyz Art newimage
 # pull an equivalent workspace at specific change:
 ionice -c 3 a4 newtree --no-src --reuse-client --no-parent-rpms --no-yum-cache --repo http://dist/Abuild/kkofman.noUsb0.0/i386_18/4778423/RPMS/ --change 4778423 <targetDirectory> kkofman.noUsb0.0
 ===== ==========
+a4 rpmrepo -v 4.20.0F-6811919.sritchiesharedmem0
