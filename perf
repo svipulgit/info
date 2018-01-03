@@ -1,0 +1,37 @@
+a4 yum install FlameGraph
+Art perf [dut] configure ====> If this fails or does not run, do the steps under [1] instead
+Art perf [dut] start -p processname
+<run experiment>
+Art perf [dut] stop
+
+top -b -p `pidof Bgp`
+
+cd /tmp/perf on the buildserver
+perf script | /src/Bgp/test/PerfDemangle.py | /usr/bin/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded
+/usr/bin/FlameGraph/flamegraph.pl /tmp/out.perf-folded > /tmp/perf.svg
+
+[1] if the Art perf configure failes, 
+   - You can download "Perl.swix" and "Perf.swix" from dist (corresponding to your image). 
+
+Internal build ID:      d75e4742-83ef-401e-bb44-51c0bcd3d9f9
+a4 rpmrepo --serial=d75e4742-83ef-401e-bb44-51c0bcd3d9f9
+wget http://dist/Abuild/eos-trunk/i386_18/5831863/images/Perl.swix
+
+   -  Lets say the swix files are in /tmp
+   - unzip Perl.swix
+   - sudo rpm -ivh /tmp/*.rpm
+   - rm /tmp/*.rpm
+   - unzip Perf.swix
+   - sudo rpm -ivh /tmp/*.rpm
+   - rm /tmp/*.rpm
+
+
+perf script | /src/Bgp/test/PerfDemangle.py | ~/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded.20170808_074420
+/usr/bin/FlameGraph/flamegraph.pl /tmp/out.perf-folded.20170808_074420 > /tmp/perf-20170808_074420.svg
+
+Venkit Kasiviswanathan (venkit@aristanetworks.com, venkit@arista.com)
+route-map ESW-SSW-OUT-arthe deny 830
+  match community CLUSTER-PUBLIC-AGG-arthe
+  exit
+
+no route-map ESW-SSW-OUT-arthe deny 830
