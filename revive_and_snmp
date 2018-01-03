@@ -1,0 +1,69 @@
+Regarding the SNMP config, we do have the information in the core file, right? I don't understand why it's required to get this from the customer. The core file is definitive...
+
+
+Looking at the review for the bug, http://reviewboard/r/98382/diff/#4.25 we see it's AGX_TRAP_ENABLED to look at. This is set elsewhere.
+
+# grep -r AGX_TRAP_ENABLED .
+./agentx/agentx.c: * That function sets the AGX_TRAP_ENABLED flag.
+./agentx/agentx.c:    if (!BIT_TEST(vb->flags, AGX_TRAP_ENABLED)) {
+./agentx/agentx.c:        BIT_SET(vb->flags, AGX_TRAP_ENABLED);
+./agentx/agentx_pdu.h:#define AGX_TRAP_ENABLED                  0x01
+
+Here's the setter:
+
+agentx_should_send_trap( varbind_t *vb, const char *type, const char *name )
+{
+    if(should_send_trap_cb && (should_send_trap_cb)(type, name)) {
+        BIT_SET(vb->flags, AGX_TRAP_ENABLED);
+        return 1;
+    } 
+
+# grep should_send_trap_cb agentx/*
+agentx/agentx.c:G_GLOBAL(int (*should_send_trap_cb)(const char *type, const char *name));
+agentx/agentx.c:    should_send_trap_cb = cb;
+agentx/agentx.c:    if(should_send_trap_cb && (should_send_trap_cb)(type, name)) {
+
+Here's the setter for the callback:
+
+agentx_register_send_trap_cb(int (*cb)(const char *type, const char *name))
+{
+    should_send_trap_cb = cb;
+
+Hmm, tags finds the caller here in RibSnmp.tin:
+   agentx_register_send_trap_cb( rib_should_send_trap_cb );
+
+From rib_should_send_trap_cb:
+
+      Snmp::NotificationStatus notifStatus =
+                  snmpConfig->notificationStatus( type, name );
+      return notifStatus.enabled();
+
+Okay now we're getting into tacc, and this is clearly why the ribd dump is not going to tell you.
+
+(gdb) source /tmp/tacgdb.py 
+
+                gdb is now running in TACC mode
+        Type in "help tacc" to know more about the tacc commands
+
+(gdb) print 'RibSnmp::ribSnmpRoot'
+$1 = (RibSnmp::Root *)0xa0c5830 (SmartPtr)
+(gdb) p *$1
+You can't do that without a process to debug.
+
+ARGH. Okay, we can fix this.
+
+bash-4.1# wget http://dist.sjc.aristanetworks.com/storage/jmmikkel/Phoenix/fc14.i686/Phoenix.i686.rpm
+bash-4.1# wget http://dist.sjc.aristanetworks.com/storage/jmmikkel/Phoenix/fc14.i686/Phoenix-gdb.i686.rpm
+bash-4.1# wget http://dist.sjc.aristanetworks.com/storage/jmmikkel/Phoenix/fc14.i686/Phoenix-debuginfo.i686.rpm
+bash-4.1# yum install Phoenix*
+bash-4.1# revivegdb /var/core/20171201-DM2CORSPN1A-core.3068.1512125297.ribd
+(gdb) p 'RibSnmp::rib_should_send_trap_cb'
+$1 = {int (const char *, 
+    const char *)} 0xed17e160 <RibSnmp::rib_should_send_trap_cb(char const*, char const*)>
+(gdb) call RibSnmp::rib_should_send_trap_cb("bgp", "bgpBackwardTransition")
+$2 = 0
+bash-4.1# revivegdb /var/core/20171201-DM2CORSPN1B-core.3135.1512122938.ribd 
+(gdb) call RibSnmp::rib_should_send_trap_cb("bgp", "bgpBackwardTransition")
+$1 = 0
+
+Good enough?
