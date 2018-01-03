@@ -234,3 +234,11 @@ Running all stests
 NOPDB=1 a4 make -j12 -p Bgp stests 2>&1 | tee /tmp/bgp-stests.log
 a4 logscan -n -l /tmp/bgp-stests.log
 NOPDB=1 a4 make -j3 -p Bgp TESTS="stest/BgpRRIntegCommunityTest.py stest/BgpGRSpeakerBasicTest.py" check 2>&1 | tee /tmp/bgp-some-stests.log
+
+ap stest --logscan --noBugs --interactive --fail -p <proj>
+
+a4 bugs print url
+=================
+a4 bugs -b ment1 | grep -i bgp | sed "s/^ *\([0-9]*\) /http:\/\/bug\/\1\n/"
+
+=================

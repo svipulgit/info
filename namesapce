@@ -32,14 +32,10 @@ Art hlep dutspec (list all available duts)
 
 netns rtr13 DumpDb tbt://localhost:9999
 
-============running a new agent in Workspace dut ====
-agentsToRun is not implemented for WorkspaceDuts (however it is implemented for other kinds of duts).
-
-You can add your agent to the residentAgents list of a dut's HwDesc defined in {Yosemite,Sequoia,Napa,Bodega,PtReyes}/ArosTestPlugin/*HwDesc.py. For a modular dut, you will want to add it to the supervisor's list of resident agents.
-
 ===============
 what is the correct way to start/stop agents on a namespace dut?
 For standalone, you can run "Art set agentsToRun <agents>"  before running "Art on".
+Art set rtr1 agentsToRun Ipv6RouterAdvt
 ===============
 Kill corrupted namespace dut:
 sudo netns -k DUTNAME

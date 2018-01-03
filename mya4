@@ -1,4 +1,5 @@
 a4c create -c -p svipul.etcN.0 -b Bgp -b gated -b ArBgp eos-trunk etcN
+a4c create -c -p svipul.task.1 -b Bgp -b gated -b ArBgp eos-trunk task1
 a4 mut clone -c <mutname like et> <dir>
 a4 mut clone -p il.elgin-rel -c elgin elgin
 a4 mut clone -p arbgp-trunk-dmz.common -c ar-conv arconv -b ArBgp -b gated -b Bgp
