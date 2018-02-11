@@ -242,3 +242,10 @@ a4 bugs print url
 a4 bugs -b ment1 | grep -i bgp | sed "s/^ *\([0-9]*\) /http:\/\/bug\/\1\n/"
 
 =================
+Enable feature toggle in breadth test
+TOGGLE_OVERRIDE=VrfScaleToggle=1 a4 make -p ArBgp check -j auto
+# doesn't work - TOGGLE_OVERRIDE=ArBgpRxToBribUseXtToggle=1 test/ArBgpAdjRibinSmTests.py
+cat /mnt/flash/toggle_override
+ArBgpRxToBribUseXtToggle=1
+=================
+=================

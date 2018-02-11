@@ -7,7 +7,7 @@ Art perf [dut] stop
 top -b -p `pidof Bgp`
 
 cd /tmp/perf on the buildserver
-perf script | /src/Bgp/test/PerfDemangle.py | /usr/bin/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded
+perf script | /src/BgpCommon/test/PerfDemangle.py | /usr/bin/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded
 /usr/bin/FlameGraph/flamegraph.pl /tmp/out.perf-folded > /tmp/perf.svg
 
 [1] if the Art perf configure failes, 
@@ -26,12 +26,52 @@ wget http://dist/Abuild/eos-trunk/i386_18/5831863/images/Perl.swix
    - rm /tmp/*.rpm
 
 
-perf script | /src/Bgp/test/PerfDemangle.py | ~/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded.20170808_074420
+perf script | /src/BgpCommon/test/PerfDemangle.py | ~/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded.20170808_074420
 /usr/bin/FlameGraph/flamegraph.pl /tmp/out.perf-folded.20170808_074420 > /tmp/perf-20170808_074420.svg
 
-Venkit Kasiviswanathan (venkit@aristanetworks.com, venkit@arista.com)
-route-map ESW-SSW-OUT-arthe deny 830
-  match community CLUSTER-PUBLIC-AGG-arthe
-  exit
+======================== Running with stest ================
 
-no route-map ESW-SSW-OUT-arthe deny 830
+Instead of perfConfigure, run following
+
+a4 yum install -y --enablerepo=* EosKernel-perf EosKernel-debug tacc-debuginfo gcc-debuginfo glibc-debuginfo FlameGraph EosExtras
+
+--- //src/BgpCommon/venkit.mrt.3/test/BgpGaTTbgpTests.py	#5
++++ src/BgpCommon/test/BgpGaTTbgpTests.py	2017-09-26 17:45:12.976243334 -0700
+@@ -33,6 +33,7 @@
+ import Netns
+ from BenchmarkDb import BenchmarkSession
+ import os
++import ArosTest.ArtCommands.Perf as Perf
+ 
+ __defaultTraceHandle__ = Tracing.Handle( "BgpGaTTbgpTests" )
+ ArosTest.desiredTracingIs( "BgpGaTTbgpTests/0" )
+@@ -2135,6 +2136,13 @@
+                                         numGbgpPeersPerDut=numGbgpPeersPerDut )
+    dut = t.deviceList()[ 0 ]
+ 
++   yumOut = Tac.run( [ 'a4', 'yum', 'install', '-y', 'ArBgp-debuginfo' ], 
++                     stdout=Tac.CAPTURE )
+
+^^^^ VPS: the above fails. So do manual step:
+   # a4 yum install -y --enablerepo=* EosKernel-perf EosKernel-debug
+   # tacc-debuginfo gcc-debuginfo glibc-debuginfo FlameGraph EosExtras
+
++   t0( 'Installing debuginfo \n', yumOut )
++   #Perf.perfConfigure( dut )
++   t0( "Starting perf on %s" % dut )
++   Perf.perfStart( dut, "Bgp" )
++
+    t0( "Setup mrtScaleHandler" )
+    mrtScaleHandler = MrtScaleHandler( peers=gPeers, peerAsns=gPeerAsns,
+                                       peerAddrs=gPeerAddrs, mrtFiles=mrtFiles,
+@@ -2170,6 +2178,10 @@
+       with Netns.RunInOuterNetworkNamespace():
+          session.writeResult( delta, benchmarkName, desc, 'secs' )
+ 
++   Perf.perfStop( dut )
++   Perf.perfFlameGraph( '/tmp/perf/perf.data' )
++   Tac.pdb()
++
+    if verifyMemInfoExport:
+       gatedExportVerifier.verifyMemInfoExport()
+ 

@@ -60,3 +60,15 @@ SORTING of task window
 --genDeps no --no-use-resourced
 =========== Running multiple commands in for loop =========
 bash for igpgw in `FastCli -c $'en\nshow ip bgp 0.0.0.0/0 | grep from | tr -s \' \' | cut -d \' \' -f 2'`; do FastCli -c $'en\nshow ip route '$igpgw"| grep via"; done
+
+======== COW ======
+You can use this simple script to print out the COW'd sizes over time:
+while sleep 1; do
+   if [ -n "$(pidof -o $1 $2)" ]; then
+      COW="$(sudo cat /proc/$(pidof -o $1 $2)/smaps | grep Private_Dirty | cut -d 'k' -f1 | awk '{s+=$2} END {print s}')"
+      HP="$(sudo cat /proc/$(pidof -o $1 $2)/maps | grep "\[heap\]" | cut -d ' ' -f1 | paste -sd "," -)"
+      echo $COW $HP
+   fi
+done
+======== ======
+======== ======
