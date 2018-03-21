@@ -1,7 +1,9 @@
-a4c create -c -p svipul.etcN.0 -b Bgp -b gated -b ArBgp eos-trunk etcN
+a4c create -c svipul.etcN.0 -b Bgp -b gated -b ArBgp -p eos-trunk etcN
 
 a4c build svipul.xyz.0      -  Build a new image for your project 
-a4c create svipul.xyz.0 xyz - Create new container using above image
+# Recreate new container using existing image (may be on other us server)
+a4c create [--image eos-trunk] svipul.xyz.0 xyz
+
 =======
 a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul
 a4 newtree atbu ga.atlanta-bugfix-svipul

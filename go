@@ -1,12 +1,8 @@
-go/taccSyntax
 go/codenames - dut & releases
-go/sand-esc - escalation schedule
 go/arecruit - http://arista-arecruit.appspot.com/
-go/debugsand - sand debugging guides
-go/tacc-docs - tacc folder with all docs
 go/debugging - debugging tools by Eric
-go/jericho-timelines
 go/projectgraph - projects graph
+go/service-status - S/W Infra K8s Cluster Services
 
 go/gatedu
 go/unicast-esc - How to escalate a routing (gated) issue
@@ -18,4 +14,14 @@ go/BgpReading - BGP reading list
 go/arbgp-gatedbgp - feature support comparison
 
 
+tacc:
+----
+go/taccSyntax
+go/tacc-docs - tacc folder with all docs
 http://eosdoc - tacc types and attributes
+
+old:
+---
+go/jericho-timelines
+go/sand-esc - escalation schedule
+go/debugsand - sand debugging guides
