@@ -38,7 +38,7 @@ a4 newbug -p Petra -c fabric -s "Implement per SandSlice Audit-interval"
 ^^^^^^^ Build
 ===========
 
-sudo swi rpm /images/EOS.swi -U /RPMS/Eos.i686.rpm
+sudo swi rpm /images/EOS.swi -U /RPMS/ArBgp-lib.i686.rpm
 
 ^^^^^^^ Debugging
 ===========
@@ -150,6 +150,8 @@ ElCapitan-noSand, and yo618 to scheduled 2011-aradPatch.
 ====== Manually schedule autotest ===
 # AutoTest -d lf115 --filter="^CpuFabricTest/CpuFabricCliTest.py" --notify=svipul --skipTestbedCheck -n 2 -a --logDir=/tmp/logs/
 AutoTest --notify=svipul --skipTestbedCheck -a --logDir=/tmp/logs/ -n 10 -t 10000 --algorithm=fixed -d xxx --testListFile=test_list1
+====== Manually schedule stest ===
+AutoTest --stests --logDir=/tmp --root=/ —branch=<project> --change <CN> --testListFile=/tmp/testfile --testDriver=us172.sjc.aristanetworks.com
 =============== from DD ==============
 
 ======= mlag dut ===
@@ -247,5 +249,13 @@ TOGGLE_OVERRIDE=VrfScaleToggle=1 a4 make -p ArBgp check -j auto
 # doesn't work - TOGGLE_OVERRIDE=ArBgpRxToBribUseXtToggle=1 test/ArBgpAdjRibinSmTests.py
 cat /mnt/flash/toggle_override
 ArBgpRxToBribUseXtToggle=1
+---
+In stest:
+ArTogglesTestLib.enableToggle( 'BribBBLPToggle' )
+=================
+sudo revivegdb /var/core/core.24717.1524585645.ConfigAgent
+call printPythonBacktrace(2)
+=================
+pprof /usr/bin/Bgp "/tmp/Bgp.15669._main_-end.heap" --inuse_objects --lines --heapcheck  --edgefraction=1e-10 --nodefraction=1e-10 --pdf > /tmp/nomt_memleak.pdf
 =================
 =================

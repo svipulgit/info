@@ -70,5 +70,9 @@ while sleep 1; do
       echo $COW $HP
    fi
 done
-======== ======
-======== ======
+===============
+# print patternrules that run a stest removed from a Makefile in this mut
+a4 project diff -p venkit.eos64.0 | grep '^-.*_STESTS += ' | awk '{print $3}' | sed -e 's@stest/@ArBgp/@' -e 's@\.py$@@' | xargs -n 1 a tpgen patternrule list -s
+===============
+===============
+===============
