@@ -1,8 +1,11 @@
-a4c create -c svipul.etcN.0 -b Bgp -b gated -b ArBgp -p eos-trunk etcN
+a4c create -c svipul.etN.0 -b Bgp -b BgpCommon -b ArBgp -p eos-trunk etN; a4c shell etN
+git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp; a4c shell gt1
 
 a4c build svipul.xyz.0      -  Build a new image for your project 
 # Recreate new container using existing image (may be on other us server)
 a4c create [--image eos-trunk] svipul.xyz.0 xyz
+# create view container with specific CL
+a4c create -v -i eos-trunk-i386_18:8442553  eos-trunk
 
 =======
 a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul
@@ -228,5 +231,8 @@ a4 rpmrepo -v 4.20.0F-6811919.sritchiesharedmem0
 All the changes went into eos-trunk for a specific date
 a4 changes -ai //src/ArBgp/eos-trunk/...@2018/01/19,@2018/01/21
 ================
+# Build only specific tac / tin
+tacccache +d -I/usr/include/python2.7 -Isrc-includes -Igenerated-includes -I/usr/include /src/ArBgp/BgpCrossThreadNotify.tac -o .
+amake ArBgp libArBgp_la-NotifyingListsForRkp.lo
 ================
 ================

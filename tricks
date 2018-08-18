@@ -74,5 +74,10 @@ done
 # print patternrules that run a stest removed from a Makefile in this mut
 a4 project diff -p venkit.eos64.0 | grep '^-.*_STESTS += ' | awk '{print $3}' | sed -e 's@stest/@ArBgp/@' -e 's@\.py$@@' | xargs -n 1 a tpgen patternrule list -s
 ===============
+# Fresh compilation of module
+rm libBgpEvpnPlugin_la-EvpnPlugin.lo
+rm .libs/libBgpEvpnPlugin_la-EvpnPlugin.lo
+export CCACHE_DISABLE=1
+artime make libBgpEvpnPlugin_la-EvpnPlugin.lo
 ===============
 ===============

@@ -19,9 +19,8 @@ tacc:
 go/taccSyntax
 go/tacc-docs - tacc folder with all docs
 http://eosdoc - tacc types and attributes
+http://go/toi-tutorial - TOI
 
 old:
 ---
-go/jericho-timelines
-go/sand-esc - escalation schedule
 go/debugsand - sand debugging guides

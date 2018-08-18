@@ -57,3 +57,20 @@ cat /proc/net/unix
 Cli -A -k sysdb9513 -s ip1
 or
 FastCli -A --sysname=rtr1
+===================
+# Agent restart
+===================
+/ @rtr1+rtr1% cat /tmp/ArosTest/rtr1.txt | grep Rib
+Rib = 9934
+/ @rtr1+rtr1% sudo kill -9 9934
+/ @rtr1+rtr1% cat /tmp/ArosTest/rtr1.txt | grep "sysdbSockname"
+sysdbSockname = sysdb
+/ @rtr1+rtr1% sudo Rib --sysdbsockname=sysdb --sysname=rtr1 > /tmp/Arostest/rtr1.var-log/rtr1.Rib &
+
+OR
+IMMORTALIZE_ALWAYS_RESTART or ETBA_IMMORTALIZE
+
+OR
+Art pyshell [dutspec]
+edut.restartAgent( agentName, signum=signal.SIGKILL, doLogRes=False )
+===================

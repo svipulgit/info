@@ -275,5 +275,17 @@ Now your backtrace will be very boring but you should be able to figure out what
 ======
 sudo gdb --batch -e /usr/bin/Ebra -p $(pidof -s Ebra)  -ex 'set print elements 0' -ex 'x/s getenv( "TRACE" )'
 ======
+Accessing rawPtr
+(gdb) print notifyingPathListToRkp_
+$6 = (Routing::Bgp::RkPartitionThread::TacNotifyingPathListToRkp)0x8eaf040 (SmartPtr)
+
+(gdb) print notifyingPathListToRkp_.rawPtr_
+$7 = (Routing::Bgp::RkPartitionThread::TacNotifyingPathListToRkp *) 0x8eaf040
+
+(gdb) print notifyingPathListToRkp_.rawPtr_.rkPartitionThread_
+$9 = (Routing::Bgp::RkPartitionThread *) 0x8eaef10
 ======
+# Read partial core file
+gzip -c -d core.17095.1528760409.Bgp-main.partial.gz > tmpcore
+readelf -l tmpcore
 ======

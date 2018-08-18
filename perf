@@ -1,3 +1,14 @@
+========== flamegraph steps from Mayukh ========
+1. Art perf [dut] configure
+2. Art perf start won't work because of the pidof bug, so manually run perf:
+Check that no perf process is running, if so manually kill it
+sudo bash -c 'nohup perf record -g -p 5064 -o /tmp/perf.data &
+3. Art perf [dut] stop --> This should be fine, once perf is actually running pidof returns the correct pid
+4. Generate the report:
+Art perf [dut] report
+5. Generate the flamegraph:
+Art perf [dut] flamegraph
+=================== Running flamegrapth on dut ==========
 a4 yum install FlameGraph
 Art perf [dut] configure ====> If this fails or does not run, do the steps under [1] instead
 Art perf [dut] start -p processname
@@ -9,6 +20,7 @@ top -b -p `pidof Bgp`
 cd /tmp/perf on the buildserver
 perf script | /src/BgpCommon/test/PerfDemangle.py | /usr/bin/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded
 /usr/bin/FlameGraph/flamegraph.pl /tmp/out.perf-folded > /tmp/perf.svg
+============================
 
 [1] if the Art perf configure failes, 
    - You can download "Perl.swix" and "Perf.swix" from dist (corresponding to your image). 
@@ -24,6 +36,18 @@ wget http://dist/Abuild/eos-trunk/i386_18/5831863/images/Perl.swix
    - unzip Perf.swix
    - sudo rpm -ivh /tmp/*.rpm
    - rm /tmp/*.rpm
+
+sudo -b bash -c 'nohup perf record -g -p 3932 -o /tmp/perf/out1 &>nohup.out &'
+sudo kill -SIGINT <pidof perf>
+
+/tmp/perf/perf.data
+perf script > perfScript
+
+/usr/bin/FlameGraph/stackcollapse-perf.pl < perfScript > perfCollapse
+
+c++filt < perfCollapse > perfDemangled
+
+/usr/bin/FlameGraph/flamegraph.pl perfDemangled > perf.svg
 
 
 perf script | /src/BgpCommon/test/PerfDemangle.py | ~/FlameGraph/stackcollapse-perf.pl > /tmp/out.perf-folded.20170808_074420

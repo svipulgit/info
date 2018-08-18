@@ -2,3 +2,18 @@ Cisco Nexus 7k BGP config guide:
 http://www.cisco.com/c/en/us/td/docs/switches/datacenter/sw/5_x/nx-os/unicast/configuration/guide/l3_cli_nxos/l3_advbgp.html
 # running gii ?
 sudo echo 'show bgp dump ribout 100.101.2.2' | nc -t localhost 616 | grep -e 0.0.0.0 -e Que | wc -l
+
+==================
+# Enabling gii
+bash cliribd
+conf t
+gii-enable
+exit
+==================
+# gii command
+bash telnet localhost 616
+show scheduler
+==================
+==================
+==================
+==================

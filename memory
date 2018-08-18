@@ -3,6 +3,11 @@ rpm -ivh --nodeps Ark-devel.i686.rpm
 #python -m Acons Bgp
 $ import MemTools
 $ MemTools.dumpHeap( open( '/tmp/outputFile', 'w' ), False )
+cat outputFile | /src/Ark/InterpretHeapDump  > memSummary.txt
+===================
+EosMemUsage Bgp
+===================
+top -n 1 -p $(pidof Bgp); service ProcMgr stoppm; date; gdb --batch -ex "call malloc_trim(0)" -p $(pidof Bgp); date; top -n 1 -p $(pidof Bgp); service ProcMgr start
 ===================
 echo 3 > /proc/sys/vm/drop_caches && free -m
 ===================

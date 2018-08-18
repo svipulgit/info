@@ -252,10 +252,22 @@ ArBgpRxToBribUseXtToggle=1
 ---
 In stest:
 ArTogglesTestLib.enableToggle( 'BribBBLPToggle' )
+Namespace dut:
+set env variable. Then Art grab/on
 =================
 sudo revivegdb /var/core/core.24717.1524585645.ConfigAgent
 call printPythonBacktrace(2)
 =================
 pprof /usr/bin/Bgp "/tmp/Bgp.15669._main_-end.heap" --inuse_objects --lines --heapcheck  --edgefraction=1e-10 --nodefraction=1e-10 --pdf > /tmp/nomt_memleak.pdf
+=================
+BBB - One way you can measure this is to run the compile like this:
+a4 make -p ArBgp all-pre
+
+This will generate the preprocessed *.cpre files.  You can then sum the total line count with:
+cat /bld/ArBgp/*.cpre | wc -l
+cat /bld/ArBgp/ArBgpPlugin/*.cpre | wc -l
+
+Then compare those numbers before/after your change.
+=================
 =================
 =================
