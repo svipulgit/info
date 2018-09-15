@@ -36,6 +36,9 @@ wget http://dist/Abuild/eos-trunk/i386_18/5831863/images/Perl.swix
    - unzip Perf.swix
    - sudo rpm -ivh /tmp/*.rpm
    - rm /tmp/*.rpm
+Or
+copy file:/tmp/Perl.swix extension:
+copy file:/tmp/Perf.swix extension:
 
 sudo -b bash -c 'nohup perf record -g -p 3932 -o /tmp/perf/out1 &>nohup.out &'
 sudo kill -SIGINT <pidof perf>

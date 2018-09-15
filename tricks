@@ -80,4 +80,9 @@ rm .libs/libBgpEvpnPlugin_la-EvpnPlugin.lo
 export CCACHE_DISABLE=1
 artime make libBgpEvpnPlugin_la-EvpnPlugin.lo
 ===============
+Acons dump
+from FormatHelperTestMixin import FormatHelperTestMixin as Fmt
+$ print routeKeyDedupTable.dumpState( Fmt.tacDumpContext( level=0 ), 0 )
+===============
+===============
 ===============

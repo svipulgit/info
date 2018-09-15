@@ -1,6 +1,46 @@
+# arista workflow:
+git checkout -b mybranch master
+git checkout master
+git reset --hard HEAD^
+git checkout mybranch
+git checkout --ours -- *.c (or file name)
+
+git a update
+git rebase master
+git rebase -i master # if there are multiple commits
+git rebase -X theirs master
+
+git stash show -p
+git stash show -p stash@{0}
+
+# Revert the most recent stash
+git stash show -p | git apply -R
+
+# Revert diff in working tree
+git checkout -p <file name>
+
+# porting a change to new branch
+git checkout -b newbranch
+git cherry-pick <commit id>
+
+git add
+git commit
+git a review
+
+git a push ( git a prepchange /  git a submit -c <cl> )
+git a mutrev
+
 # initial config
 git config --global user.name sv
 git config --global user.email sv@
+
+# Move the notes along with changes from one container to another:
+git notes --ref refs/notes/gitar-v1 show # show them in the first repo's HEAD
+git notes --ref refs/notes/gitar-v1 edit # add them to the second repo's HEAD
+
+
+
+
 
 # SSH setup
 # https://help.github.com/articles/connecting-to-github-with-ssh/
