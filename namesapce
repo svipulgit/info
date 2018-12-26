@@ -74,3 +74,7 @@ OR
 Art pyshell [dutspec]
 edut.restartAgent( agentName, signum=signal.SIGKILL, doLogRes=False )
 ===================
+Art set bgprtr<#> agentsToRun Pseudowire,MplsUtillsp,Tunnel,LdpAgent
+===================
+===================
+

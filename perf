@@ -36,14 +36,21 @@ wget http://dist/Abuild/eos-trunk/i386_18/5831863/images/Perl.swix
    - unzip Perf.swix
    - sudo rpm -ivh /tmp/*.rpm
    - rm /tmp/*.rpm
-Or
+Or (on real dut)
 copy file:/tmp/Perl.swix extension:
 copy file:/tmp/Perf.swix extension:
 
 sudo -b bash -c 'nohup perf record -g -p 3932 -o /tmp/perf/out1 &>nohup.out &'
 sudo kill -SIGINT <pidof perf>
 
+wget http://dist/Abuild/delhi-rel/i386_18/9866863/RPMS/ArBgp-debuginfo.i686.rpm
+wget http://dist/Abuild/delhi-rel/i386_18/9866863/RPMS/Ark-debuginfo.i686.rpm
+
 /tmp/perf/perf.data
+
+flamegraph -i perf.data -o perf.svg
+# Running the above is sufficient. We can skip the rest of the steps
+
 perf script > perfScript
 
 /usr/bin/FlameGraph/stackcollapse-perf.pl < perfScript > perfCollapse

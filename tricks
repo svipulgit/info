@@ -84,5 +84,21 @@ Acons dump
 from FormatHelperTestMixin import FormatHelperTestMixin as Fmt
 $ print routeKeyDedupTable.dumpState( Fmt.tacDumpContext( level=0 ), 0 )
 ===============
+Run test multiple times and redirect pdb output to terminal:
+import pdb
+f1 = open( '/dev/pts/46', 'r')
+f2 = open( '/dev/pts/46', 'w' )
+mypdb =  pdb.Pdb( stdin=f1, stdout=f2 )
+mypdb.set_trace()
+
+#!/usr/bin/env bash
+for i in `seq 10`; do
+   MyBanner $i
+   MyBanner $i > /src/attempt.txt
+   TRACE="pexpect/0-2"  /src/ArBgpTest/stest/ArBgpEcmpMultipleIntfToggleStateTest.py > testoutput.txt 2>&1
+   if [ $? -ne 0 ]; then
+      exit 42
+   fi
+done
 ===============
 ===============

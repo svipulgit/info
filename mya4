@@ -1,11 +1,13 @@
 a4c create -c svipul.etN.0 -b Bgp -b BgpCommon -b ArBgp -p eos-trunk etN; a4c shell etN
-git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp; a4c shell gt1
+git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp -p delhi-rel; a4c shell gt1
 
 a4c build svipul.xyz.0      -  Build a new image for your project 
 # Recreate new container using existing image (may be on other us server)
 a4c create [--image eos-trunk] svipul.xyz.0 xyz
 # create view container with specific CL
 a4c create -v -i eos-trunk-i386_18:8442553  eos-trunk
+
+a4c shell --restart <name>
 
 =======
 a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul

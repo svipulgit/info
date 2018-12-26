@@ -200,6 +200,7 @@ screen -e^oa -S serial -fn /dev/tty.usbserial 9600,cs8
 
 Recreate mem leak failures in Abuild:
 ABUILD=1 or ARTEST_HEAPCHECK=1
+ARTEST_RANDSEED=1545034695 ARTEST_HEAPCHECK=1 HEAPCHECK=draconian ArBgpTest/test/ArBgpCleanupTest.py
 ========
 event-handler updateLocktime
    trigger on-intf Vlan100 operstatus
@@ -230,6 +231,7 @@ sudo TRACE=CliHelper/*,CliCommonHelper/*,LpmSm/* /usr/bin/SandL3UnicastCliUtil -
 ===
 a4 patternrule add /src/gated/gated-ctk/src/aspath/aspath_bgp.c Bgp/*InplaceAdjReplace* --function-pattern bgp_ecmp_compute_
 a4 patternrule add /src/gated/gated-ctk/src/aspath/aspath_bgp.c "--type stest -S Bgp/InplaceAdjReplace" --function-pattern bgp_ecmp_compute_
+a4 patternrule add "/src/(BgpCommon/test/BgpGaTTReplayTestLib\.py|MplsVpnTest/test/MplsVpnScaleTestLib\.py)" "MplsVpnTest/MplsVpnExportScalePtest.py"
 
 Running all stests
 =================
@@ -268,6 +270,15 @@ cat /bld/ArBgp/*.cpre | wc -l
 cat /bld/ArBgp/ArBgpPlugin/*.cpre | wc -l
 
 Then compare those numbers before/after your change.
+=================
+amake Ark check TESTS=EventLoopTest TRACE=EventLoopThreadTest/*
+=================
+find . -name '*.py' > /tmp/vips_py_cscope.files
+pycscope -R -f /tmp/vips_py_cscope.out -i /tmp/vips_py_cscope.files
+cs add /tmp/vips_py_cscope.out <path where the above cmd ran>
+=================
+# Check bgp socket buffer status
+ss -l | grep bgp
 =================
 =================
 =================

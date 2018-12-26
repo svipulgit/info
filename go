@@ -3,6 +3,7 @@ go/arecruit - http://arista-arecruit.appspot.com/
 go/debugging - debugging tools by Eric
 go/projectgraph - projects graph
 go/service-status - S/W Infra K8s Cluster Services
+go/mts - go/mts/override/svipul/<ID>
 
 go/gatedu
 go/unicast-esc - How to escalate a routing (gated) issue
@@ -25,4 +26,6 @@ http://go/toi-tutorial - TOI
 
 old:
 ---
+go/j2talks - Jericho 2
 go/debugsand - sand debugging guides
+go/sandama - ask me anything

@@ -1,13 +1,21 @@
 # arista workflow:
+git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp; a4c shell gt1
+
 git checkout -b mybranch master
 git checkout master
 git reset --hard HEAD^
 git checkout mybranch
 git checkout --ours -- *.c (or file name)
 
+git a branchpackage <pkg-name>
 git a update
 git rebase master
 git rebase -i master # if there are multiple commits
+(
+pick commit 1
+squash commit 2
+squash commit 3
+)
 git rebase -X theirs master
 
 git stash show -p
@@ -22,10 +30,23 @@ git checkout -p <file name>
 # porting a change to new branch
 git checkout -b newbranch
 git cherry-pick <commit id>
+git cherry-pick --abort
 
-git add
+# show content of commit
+git show <COMMIT>
+git diff <COMMIT>~ <COMMIT>
+
+# diff since beginning (git checkout)
+git diff origin/master...
+
+# applying patch
+https://mijingo.com/blog/creating-and-applying-patch-files-in-git
+
+git add .
 git commit
 git a review
+
+git a lint
 
 git a push ( git a prepchange /  git a submit -c <cl> )
 git a mutrev
