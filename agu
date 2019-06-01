@@ -1,0 +1,30 @@
+a git create -c -b ArBgp -n hash2 [--primary eos-trunk] svipul.hash2.0
+a git start 02-bad-hash-fix
+git add
+git commit -m ""
+a git push -c 02-bad-hash-fix
+a git review -c 02-bad-hash-fix
+# a git abuild -c 02-bad-hash-fix
+a git launch -c 02-bad-hash-fix
+
+git commit -a -m "Use default hash function for BgpParseNlriTypeCollectionKey - BUG357341"
+
+# After agu start
+repo info
+
+    cp /src/.repo/repo/repo /usr/bin/repo
+
+Manifest branch: eos-trunk
+Manifest merge branch: refs/heads/master
+Manifest groups: all,-notdefault
+----------------------------
+Project: ArBgp
+Mount path: /src/ArBgp
+Current revision: eos-trunk
+Local Branches: 1 [01-bad-hash-fix]
+----------------------------
+Project: GitarBandMutDb
+Mount path: /src/GitarBandMutDb
+Current revision: master
+Local Branches: 1 [01-bad-hash-fix]
+----------------------------

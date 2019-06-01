@@ -84,6 +84,11 @@ Acons dump
 from FormatHelperTestMixin import FormatHelperTestMixin as Fmt
 $ print routeKeyDedupTable.dumpState( Fmt.tacDumpContext( level=0 ), 0 )
 ===============
+Attaching Acons at Pdb prompt:
+Acons.shell()
+entity = Tac.newInstance( 'Routing::Bgp::BribTableBuilderSm', list of args )
+Acons.shell( root=entity )
+===============
 Run test multiple times and redirect pdb output to terminal:
 import pdb
 f1 = open( '/dev/pts/46', 'r')

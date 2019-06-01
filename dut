@@ -1,42 +1,14 @@
-tg235:
-ASSY- 00171-03 
-SN: JSH12240026
-mac: 00:1c:73:03:13:9a
+$ a dut pyshell
+Welcome to the Edut shell for <lp203>. The "edut" and "dut" variables are ready to use.
+Use quit(), exit() or Ctrl-D to exit.
+>>> dut
+<<class 'RdamDut.RdamDut'> Dut rdam://lp203>
+>>> dut.hierarchicalFecSupported()
+False
+>>> dut.routingSupported()
+False
+>>> dut.mplsSupported()
+False
+>>>
 
--bash-4.1# prefdl /tmp/chassis1
-Enter idprom contents. Spaces are ignored in PCA, Serial, KVN,
-and Deviations. The system clock must be set correctly, as
-the MfgTime field is set to the current system clock value.
-Enter PCA (PCAXXXXXVVRR): PCA000590200
-Enter ASY (ASYXXXXXVV) (not required): ASY0017103
-Enter Serial Number (JFLYYWWNNNN): JSH12240026
-Enter SKU (DCS-71XXXX): DCS-7504
-Enter KVN (XXX): 000
-Enter MAC (XX:XX:XX:XX:XX:XX) (not required): 00:1c:73:03:13:9a
-Enter SID (String) (not required):
-Enter Deviation (DNNNNNNN or return for end of list):
-DataFormat: 0002
-PCA: PCA000590200
-SerialNumber: JSH12240026
-KVN: 000
-SKU: DCS-7504
-MfgTime: 20120914192551
-ASY: ASY001710300
-MacAddrBase: 00:1c:73:03:13:9a
-Is this correct? (y/n) y
--bash-4.1#
--bash-4.1# prefdl -u /tmp/chassis1 --hwapi=01.00
 
-=================
-To recover, reboot the dut, go into Aboot mode by hitting ^c when it prompts.
-From Aboot prompt add these two lines to the startup config:
-
-Aboot# vi /mnt/flash/startup-config
-
-aaa root secret 5 $1$KzKJjsVF$07RSabQgoT5ETXJWV9rmK.
-aaa authentication policy local allow-nopassword-remote-login
-
-And then boot the image:
-Aboot# boot /mnt/flash/EOS.swi
-=================
-prompt %H.%D{%H:%M:%S}%P

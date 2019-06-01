@@ -9,6 +9,7 @@ a4c create -v -i eos-trunk-i386_18:8442553  eos-trunk
 
 a4c shell --restart <name>
 
+a build parallel status -w svipul+01-bad-hash-fix
 =======
 a4 project create -p ga.atlanta-bugfix ga.atlanta-bugfix-svipul
 a4 newtree atbu ga.atlanta-bugfix-svipul

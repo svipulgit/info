@@ -6,7 +6,7 @@ len(edut.dut_.ports())
 
 AROSTEST_SKIP=endTestCleanup EBRATEST_SKIP=intfFlush
 AROSTEST_SKIP=all EBRATEST_SKIP=all    // run 'Art cleanconfig' later
-
+AROSTEST_SKIP="checkProcessState testNaCleanup verifyHandlers" EBRATEST_SKIP=all
 
 # Various counters
 ctx.device().globalConfigCmdIs( "clear counters session" )

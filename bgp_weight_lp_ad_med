@@ -3,7 +3,7 @@ http://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-b
 
 Better - >W (32,768), >LP (100), <AD (200 - iBgp), <MED (0)
 
-W:
+W: (mab be also referred as pref2)
 The weight is assigned locally to the router.
 Routes with a higher weight value have preference when multiple routes to the same destination exist.
 A weight can be a number from 0 to 65,535. Paths that the router originates have a weight of 32,768 by default, and other paths have a weight of 0.

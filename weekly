@@ -1,0 +1,17 @@
+# Bug activities during last 7 days
+a4 bugs -a -p ArBgpTest -p ArBgp --max-idle-days 7 | grep -v "\-dev" | sort -k2
+ap logparse -p ArBgp -t Abuild.log
+ap logparse -p ArBgp -t -c -o AbuildTestTime.csv Abuild.log
+
+breadmanctl stats --primary-branch='eos-trunk' --days=2 --package ArBgp
+
+ap bughits -d 2 --color -p eos-trunk --package ArBgp --html
+
+
+http://us133:9000/react/package/group_ArBgpAll
+
+a4 bugs --logre -p ArBgp -p ArBgpTest -p ArBgpLu --min-idle-days=60 --ac --sk arastra -u DEFAULT --sk avi
+
+
+crontab -l
+11 11 * * wed /home/svipul/code/bugsPlay/allTeamBugs.py; /home/svipul/code/bugsPlay/blockingBugs.py

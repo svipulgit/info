@@ -273,12 +273,17 @@ Then compare those numbers before/after your change.
 =================
 amake Ark check TESTS=EventLoopTest TRACE=EventLoopThreadTest/*
 =================
+cd /home/svipul/git/aboard/dashboard
 find . -name '*.py' > /tmp/vips_py_cscope.files
 pycscope -R -f /tmp/vips_py_cscope.out -i /tmp/vips_py_cscope.files
+cs add /tmp/vips_py_cscope.out /home/svipul/git/aboard/dashboard
 cs add /tmp/vips_py_cscope.out <path where the above cmd ran>
 =================
 # Check bgp socket buffer status
 ss -l | grep bgp
+=================
+# Measure time usage for program
+sudo nice -n -20 /usr/bin/time <prog>
 =================
 =================
 =================

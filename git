@@ -18,6 +18,9 @@ squash commit 3
 )
 git rebase -X theirs master
 
+# reapply stashed change
+git stash pop
+
 git stash show -p
 git stash show -p stash@{0}
 
@@ -39,6 +42,9 @@ git diff <COMMIT>~ <COMMIT>
 # diff since beginning (git checkout)
 git diff origin/master...
 
+# ???
+git reflog
+
 # applying patch
 https://mijingo.com/blog/creating-and-applying-patch-files-in-git
 
@@ -52,13 +58,27 @@ git a push ( git a prepchange /  git a submit -c <cl> )
 git a mutrev
 
 # initial config
-git config --global user.name sv
-git config --global user.email sv@
+git config --global user.name svipul
+git config --global user.email svipul@arista.com
+
+git config --global user.name svipulgit
+git config --global user.email svipul@gmail.com
 
 # Move the notes along with changes from one container to another:
 git notes --ref refs/notes/gitar-v1 show # show them in the first repo's HEAD
 git notes --ref refs/notes/gitar-v1 edit # add them to the second repo's HEAD
 
+
+# squash two p4 commits to one
+# assuming git log looks like this  A - B(master, feature) - C(amend)
+git checkout master~1
+git checkout -b review
+git cherry-pick feature
+git cherry-pick amend
+git rebase -i HEAD~2    ; squash the two commits to one
+git a review -r <review-id>
+git checkout amend
+git a push
 
 
 
@@ -75,6 +95,7 @@ git config -l
 
 # …or create a new repository on the command line
 
+# non-arista.........
 echo "# helloTest" >> README.md
 git init
 git add .

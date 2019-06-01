@@ -44,9 +44,7 @@ a4 debug -m SandL3Unicast-28793 <core-file>
 #### gdb -e ... -c <corefile> command doesn't work in swi workspace
 ============
 Creating swi workspace even after dist repo is gone
-swi workspace --noauto -r
-http://bs213/arunprakash/co-arunprakash-1510551/RPMS/RPMS/
-co-arunprakash-1510551-ws co-arunprakash-1510551/co-arunprakash-1510551.swi
+swi workspace --noauto -r http://us133/svipul/ws/RPMS/ rgoh3 EOS.swi
 
 ---
 
@@ -284,8 +282,34 @@ $7 = (Routing::Bgp::RkPartitionThread::TacNotifyingPathListToRkp *) 0x8eaf040
 
 (gdb) print notifyingPathListToRkp_.rawPtr_.rkPartitionThread_
 $9 = (Routing::Bgp::RkPartitionThread *) 0x8eaef10
+
+(gdb) p this->notifyingPathHolder_.rawPtr_
+$10 = (Routing::Bgp::RkPartitionThread::TacNotifyingPathHolder *)0x55ec4b376880
+(gdb) p *$10
+$11 = (Routing::Bgp::RkPartitionThread::TacNotifyingPathHolder) {
+      notifier_ = (Tac::PtrInterface)0x55ec4b386850 (SmartPtr) ,
+    }, <No data fields>},
+  members of Routing::Bgp::RkPartitionThread::TacNotifyingPathHolder:
+  rkPartitionThread_ = (Routing::Bgp::RkPartitionThread *)0x55ec4bad0da0
+}
+
+(gdb) p *( 'Routing::Bgp::NotifyingPathHolder' *) $10->notifier_
+$12 = (Routing::Bgp::NotifyingPathHolder) {
+  <Tac::PtrInterface> = ref:536870919,
+  members of Routing::Bgp::NotifyingPathHolder:
+  notifyingPath_ = {
+    pathKey_ = (Routing::Bgp::PathKey const)0x0 (SmartPtr),
+    path_ = (Routing::Bgp::AdjRibinPath const)0x0 (SmartPtr)
+  },
+  notifiee_ = NotifieeList[], members:1 = {(Routing::Bgp::RkPartitionThread::TacNotifyingPathHolder *)0x55ec4b376880}
+}
+
 ======
 # Read partial core file
 gzip -c -d core.17095.1528760409.Bgp-main.partial.gz > tmpcore
 readelf -l tmpcore
+======
+(gdb) call sym_get_name( bgpi()->default_maintenance_receiver_rm->adv_list->adv_syment )
+.MAINTENANCE-RECEIVER
+======
 ======

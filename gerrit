@@ -1,0 +1,4 @@
+git pull --rebase
+git commit -a -m ""
+git commit --amend
+git push review

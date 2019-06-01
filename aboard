@@ -1,0 +1,3 @@
+~ @us133.sjc> docker container ls | grep svipul
+be06a76023e0        docker.corp.arista.io/aboard   "supervisord -c /e..."   4 weeks ago         Up 4 weeks          0.0.0.0:9000->80/tcp      aboard-svipul
+cff7a1f30407        mariadb:10.0                   "docker-entrypoint..."   4 weeks ago         Up 4 weeks          0.0.0.0:13306->3306/tcp   aboard-db-svipul

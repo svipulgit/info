@@ -4,6 +4,7 @@ go/debugging - debugging tools by Eric
 go/projectgraph - projects graph
 go/service-status - S/W Infra K8s Cluster Services
 go/mts - go/mts/override/svipul/<ID>
+go/collegetracker - College Recruiting Tracker
 
 go/gatedu
 go/unicast-esc - How to escalate a routing (gated) issue
