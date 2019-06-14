@@ -16,6 +16,7 @@ You set local preference with the issue of the bgp default local-preference
 AD (bnp->bgp_preference):
 The administrative is used to choose the best routing among many routing.
  The admin distance never comes into play when two BGP paths are compared. The BGP best path selection process will determine the best path and then the admin distance (20 or 200) will be used to select the route to install in the RIB
+Note: The 'preference' value in static route configuration is admin distance.
 CliRibd: neighbor <> distance N (per neighbor)
 EOS Cli: distance bgp N  (iBgp / eBgp)
 

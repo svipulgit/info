@@ -1,7 +1,8 @@
-a4c create -c svipul.etN.0 -b Bgp -b BgpCommon -b ArBgp -p eos-trunk etN; a4c shell etN
+a4c create —platform i386_el7 -c svipul.etN.0 -b Bgp -b BgpCommon -b ArBgp -p eos-trunk etN; a4c shell etN
 git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp -p delhi-rel; a4c shell gt1
 
 a4c build svipul.xyz.0      -  Build a new image for your project 
+a4c build —platform i386_el7 svipul.xyz.0
 # Recreate new container using existing image (may be on other us server)
 a4c create [--image eos-trunk] svipul.xyz.0 xyz
 # create view container with specific CL
