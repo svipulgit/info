@@ -6,6 +6,7 @@ iptables -nvL
 
 monitor kernel v6 neighbors
 ip −6 monitor neigh
+ip netns
 sudo ip netns exec ns-30 ip -6 neigh
 
 #bash

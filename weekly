@@ -15,3 +15,5 @@ a4 bugs --logre -p ArBgp -p ArBgpTest -p ArBgpLu --min-idle-days=60 --ac --sk ar
 
 crontab -l
 11 11 * * wed /home/svipul/code/bugsPlay/allTeamBugs.py; /home/svipul/code/bugsPlay/blockingBugs.py
+
+a4 bugs --opened-since 3d --pg ArBgpAll --logre -u DEFAULT

@@ -58,6 +58,7 @@ git a push ( git a prepchange /  git a submit -c <cl> )
 git a mutrev
 
 # initial config
+git config -l
 git config --global user.name svipul
 git config --global user.email svipul@arista.com
 
@@ -90,8 +91,6 @@ eval "$(ssh-agent -s)"
 ssh-add -k ~/.ssh/id_rsa
 
 git clone git@github.com:svipulgit/info.git
-
-git config -l
 
 # …or create a new repository on the command line
 

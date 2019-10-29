@@ -106,4 +106,14 @@ for i in `seq 10`; do
    fi
 done
 ===============
+The exact command is "show rib next-hop ip" and "show rib next-hop ipv6"
+Or the following incantation can compute the number of entries in viaStatus by
+using Acons
+bash sudo echo -e "vrfs =
+_['ar']['Sysdb']['cell']['1']['routing']['rib']['viaStatus'].vrfStatus\ntotalSum
+= 0\nfor vrfId in vrfs:\n\tfor tsId in vrfs[vrfId].transportStatus:\n\t\tfor
+proto in vrfs[vrfId].transportStatus[tsId].viaStatus:\n\t\t\ttotalSum +=
+len(vrfs[vrfId].transportStatus[tsId].viaStatus[proto].viaSet)\n\nprint
+totalSum\n" | python -m Acons Sysdb
+===============
 ===============

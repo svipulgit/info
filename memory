@@ -21,6 +21,7 @@ pprof /usr/bin/SandFabric "/tmp/SandFabric.4161._main_-end.heap" --text
 run the test with ARTEST_HEAPCHECK=1. That'll dump a .heap
 file in /tmp that has all the memory maps and a stacktrace of where
 the leak came from. 
+time ARTEST_HEAPCHECK=1 isolate -i -n blah artime /usr/share/stest/ArBgpTest/ArBgpIxEdgeCastInboundRmTest.py >&m; echo $?
 =================
 
 ObjectUsage -r /ar/SandTopo/SandTopo/ ar SandTopo

@@ -3,25 +3,31 @@ http://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-b
 
 Better - >W (32,768), >LP (100), <AD (200 - iBgp), <MED (0)
 
-W: (mab be also referred as pref2)
+W: (mab be also referred as pref2) - higher better
 The weight is assigned locally to the router.
 Routes with a higher weight value have preference when multiple routes to the same destination exist.
 A weight can be a number from 0 to 65,535. Paths that the router originates have a weight of 32,768 by default, and other paths have a weight of 0.
 
-LP: (Metric2)
+LP: (Metric2) - higher better
 Local preference is an indication to the AS about which path has preference to exit the AS in order to reach a certain network. A path with a higher local preference is preferred more. The default value for local preference is 100.
 Unlike the weight attribute, which is only relevant to the local router, local preference is an attribute that routers exchange in the same AS.
-You set local preference with the issue of the bgp default local-preference
+set local preference with 'bgp default local-preference'
 
-AD (bnp->bgp_preference):
+AD (bnp->bgp_preference): - lower better
 The administrative is used to choose the best routing among many routing.
  The admin distance never comes into play when two BGP paths are compared. The BGP best path selection process will determine the best path and then the admin distance (20 or 200) will be used to select the route to install in the RIB
 Note: The 'preference' value in static route configuration is admin distance.
 CliRibd: neighbor <> distance N (per neighbor)
 EOS Cli: distance bgp N  (iBgp / eBgp)
 
-MED: (Metric)
+MED: (Metric) - lower better
 The metric attribute also has the name MULTI_EXIT_DISCRIMINATOR, MED (BGP4), or INTER_AS (BGP3).
 A lower metric value is preferred more. The metric default value is 0.
 Unlike local preference, metric is exchanged between ASs
 
+IGP Preference (AD) - lower better (StackPath SR157755)
+Connected route : 
+   Pref 0, Metric 1
+Attached routes : 250
+   Pref 250, Metric 0 (For no reason, metric value is set to 0 historically. It should be 1 - same as connected route)
+(Connected is preferred over attached due to lower pref value)
