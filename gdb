@@ -116,6 +116,7 @@ gdbinit
 ==========
 set overload-resolution off 
 set print static off
+set print object
 
 ==========
 Running gdb on DUT

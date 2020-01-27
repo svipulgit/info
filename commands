@@ -285,5 +285,11 @@ ss -l | grep bgp
 # Measure time usage for program
 sudo nice -n -20 /usr/bin/time <prog>
 =================
+#disable the test in breadman if we want to stop it failing builds before it is fixed
+breadmanctl disable --primary-branch eos-trunk --package ArBgp --owner skrishnan --test IBgpNexthopHelperSmTest.py --tracking-bug 436325 --comment="disabled until original issue is fixed"
+=================
+# To run the tests quickly in your own workspace in parallel, instead of a4 stress.
+yes /src/ArBgpTest/stest/<test1>.py /src/ArBgpTest/stest/<test2.py> { ... more tests } | head -n50 | xargs -d ' ' -I {} -n1 -P10 bash -c 'XT_JITTER=1 python {} &> /tmp/$(echo {}-$$ | tr / -)'
+=================
 =================
 =================

@@ -5,6 +5,7 @@ go/projectgraph - projects graph
 go/service-status - S/W Infra K8s Cluster Services
 go/mts - go/mts/override/svipul/<ID>
 go/collegetracker - College Recruiting Tracker
+go/features - EOS Releases Feature tracker 2020 (old go/features2019)
 
 go/aboard-dev-workflow
 

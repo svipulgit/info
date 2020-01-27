@@ -70,3 +70,12 @@ Check kernel ipv4 forwarding state:
 cat /proc/sys/net/ipv4/conf/et2_2/forwarding
 sudo sh -c "echo 1 > /proc/sys/net/ipv4/conf/et2_2/forwarding"
 =======
+# Find the process with highest memory use and score
+for i in SCORE*
+> do
+> echo "==> $i:"
+> sort -nrk 24 $i | head -15
+> done
+=======
+=======
+=======
