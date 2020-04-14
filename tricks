@@ -116,4 +116,10 @@ proto in vrfs[vrfId].transportStatus[tsId].viaStatus:\n\t\t\ttotalSum +=
 len(vrfs[vrfId].transportStatus[tsId].viaStatus[proto].viaSet)\n\nprint
 totalSum\n" | python -m Acons Sysdb
 ===============
+#This will launch 50 instances of the test (running 10 of them at a time in parallel).  The logfiles for each instance will be at /tmp/*test.py*<pid>.
+yes /src/ArBgpTest/stest/<test.py> | head -n50 | xargs -I {} -n1 -P10 sh -c 'XT_JITTER=1 python {} &> /tmp/$(echo {}-$$ | tr / - | cut -c2-)' 
+yes /src/ArBgpTest/stest/ArBgpLuScaleChurnTest.py | head -n50 | xargs -I {} -n1 -P10 sh -c 'python {} &> /tmp/$(echo {}-$$ | tr / - | cut -c2-)' 
+===============
+===============
+===============
 ===============

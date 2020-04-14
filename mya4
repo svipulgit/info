@@ -242,4 +242,6 @@ a4 changes -ai //src/ArBgp/eos-trunk/...@2018/01/19,@2018/01/21
 tacccache +d -I/usr/include/python2.7 -Isrc-includes -Igenerated-includes -I/usr/include /src/ArBgp/BgpCrossThreadNotify.tac -o .
 amake ArBgp libArBgp_la-NotifyingListsForRkp.lo
 ================
+# get logre file
+a4 choose +//eng/etc
 ================

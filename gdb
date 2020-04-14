@@ -313,4 +313,19 @@ readelf -l tmpcore
 (gdb) call sym_get_name( bgpi()->default_maintenance_receiver_rm->adv_list->adv_syment )
 .MAINTENANCE-RECEIVER
 ======
+(gdb) add-symbol-file /usr/lib/libIpRibLib.so 0
+add symbol table from file "/usr/lib/libIpRibLib.so" at
+        .text_addr = 0x0
+(y or n) y
+Reading symbols from /usr/lib/libIpRibLib.so...Reading symbols from /usr/lib/debug/usr/lib/libIpRibLib.so.0.0.0.debug...done.
+(gdb) sym Bgp
+Load new symbol table from "Bgp"? (y or n) y
+Reading symbols from Bgp...Load new symbol table from "/usr/lib/debug/usr/bin/Bgp.debug"? (y or n) y
+Reading symbols from /usr/lib/debug/usr/bin/Bgp.debug...done.
+(gdb) p sizeof(Routing::Rib::RouteKey)
+$1 = 28
+(gdb) p/d offsetof( Routing::Rib::Route, routingProtocol_)
+$3 = 28
+======
+======
 ======

@@ -136,17 +136,6 @@ P4PORT=172.22.34.12:1666 a4 print
 //conf/dns-sjc2/etc/bind/hosts-sjc.aristanetworks.com | more
 
 
-========= Pin dut to specific autotest plan ============
-
-1) Change //eng/autotest/plan/aradPatch to have its dut as yo618, rather than
-yo616
-
-2) In autotest admin, go to dutdrivers. I put yo616 back onto scheduled
-ElCapitan-noSand, and yo618 to scheduled 2011-aradPatch.
-
-3) Clear currently scheduled stuff 'ScheduleTest --clear 2011.arad-patch'
-
-4) Run the test plan to reschedule. './aradPatch 2011.arad-patch'
 ====== Manually schedule autotest ===
 # AutoTest -d lf115 --filter="^CpuFabricTest/CpuFabricCliTest.py" --notify=svipul --skipTestbedCheck -n 2 -a --logDir=/tmp/logs/
 AutoTest --notify=svipul --skipTestbedCheck -a --logDir=/tmp/logs/ -n 10 -t 10000 --algorithm=fixed -d xxx --testListFile=test_list1
@@ -290,6 +279,9 @@ breadmanctl disable --primary-branch eos-trunk --package ArBgp --owner skrishnan
 =================
 # To run the tests quickly in your own workspace in parallel, instead of a4 stress.
 yes /src/ArBgpTest/stest/<test1>.py /src/ArBgpTest/stest/<test2.py> { ... more tests } | head -n50 | xargs -d ' ' -I {} -n1 -P10 bash -c 'XT_JITTER=1 python {} &> /tmp/$(echo {}-$$ | tr / -)'
+yes /src/ArBgpTest/stest/ArBgpLuRouteMapModelTest.py | head -n100 | xargs -I {} -n1 -P10 sh -c 'python {} &> /tmp/$(echo {}-$$ | tr / - | cut -c2-)'
+=================
+/src/ArBgpTest/stest/ArBgpLuScaleChurnTest.py --vgAgents='Bgp' --vgExtraArgs='--show-reachable=yes --vgdb-error=1'
 =================
 =================
 =================
