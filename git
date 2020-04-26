@@ -1,14 +1,51 @@
-# arista workflow:
-git a create -c -n gt1 svipul.gt1.0 -b BgpCommon -b ArBgp; a4c shell gt1
+# initial config
+# myGitAr
+git config -l
+git config --global user.name svipul
+git config --global user.email svipul@arista.com
 
+# myGitHub
+git config --global user.name svipulgit
+git config --global user.email svipul@gmail.com
+
+# arista.........
+a git setup (one-time only)
+a git create -p BgpCommon -n gb0
+a git start myfeature  # starts topic
+a git checkout original-topic  # to switch to other topic
+a git push
+a git topic build
+a git message
+a git review
+a git launch
+a git prune myfeature
+
+# non-arista.........
+echo "# helloTest" >> README.md
+git init
+git add .
+git commit -a -m "first commit"
+git remote add origin https://github.com/svipulgit/helloTest.git
+git remote add origin git@github.com:svipulgit/googlescripts.git
+git push -u origin master
+git pull
+
+# non-arista.. github SSH setup
+# https://help.github.com/articles/connecting-to-github-with-ssh/
+ssh-keygen -t rsa -b 4096 -C sv@
+eval "$(ssh-agent -s)"
+ssh-add -k ~/.ssh/id_rsa
+
+git clone git@github.com:svipulgit/info.git
+# …or create a new repository on the command line
+
+# git commands
 git checkout -b mybranch master
 git checkout master
 git reset --hard HEAD^
 git checkout mybranch
 git checkout --ours -- *.c (or file name)
 
-git a branchpackage <pkg-name>
-git a update
 git rebase master
 git rebase -i master # if there are multiple commits
 (
@@ -48,27 +85,9 @@ git reflog
 # applying patch
 https://mijingo.com/blog/creating-and-applying-patch-files-in-git
 
-git add .
-git commit
-git a review
-
-git a lint
-
-git a push ( git a prepchange /  git a submit -c <cl> )
-git a mutrev
-
-# initial config
-git config -l
-git config --global user.name svipul
-git config --global user.email svipul@arista.com
-
-git config --global user.name svipulgit
-git config --global user.email svipul@gmail.com
-
 # Move the notes along with changes from one container to another:
 git notes --ref refs/notes/gitar-v1 show # show them in the first repo's HEAD
 git notes --ref refs/notes/gitar-v1 edit # add them to the second repo's HEAD
-
 
 # squash two p4 commits to one
 # assuming git log looks like this  A - B(master, feature) - C(amend)
@@ -80,29 +99,6 @@ git rebase -i HEAD~2    ; squash the two commits to one
 git a review -r <review-id>
 git checkout amend
 git a push
-
-
-
-
-# SSH setup
-# https://help.github.com/articles/connecting-to-github-with-ssh/
-ssh-keygen -t rsa -b 4096 -C sv@
-eval "$(ssh-agent -s)"
-ssh-add -k ~/.ssh/id_rsa
-
-git clone git@github.com:svipulgit/info.git
-
-# …or create a new repository on the command line
-
-# non-arista.........
-echo "# helloTest" >> README.md
-git init
-git add .
-git commit -a -m "first commit"
-git remote add origin https://github.com/svipulgit/helloTest.git
-git remote add origin git@github.com:svipulgit/googlescripts.git
-git push -u origin master
-git pull
 
 
 # Aliases
@@ -122,6 +118,4 @@ alias.lg=log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold g
 alias.llg=log --color --graph --pretty=format:'%C(bold white)%H %d%Creset%n%s%n%+b%C(bold blue)%an <%ae>%Creset %C(bold green)%cr (%ci)' --abbrev-commit
 alias.d=diff
 alias.master=checkout master
-alias.spull=svn rebase
-alias.spush=svn dcommit
 alias.alias=!git config --list | grep 'alias\.' | sed 's/alias\.\([^=]*\)=\(.*\)/\1\     => \2/' | sort
