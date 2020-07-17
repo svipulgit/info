@@ -327,5 +327,18 @@ $1 = 28
 (gdb) p/d offsetof( Routing::Rib::Route, routingProtocol_)
 $3 = 28
 ======
+Revivegdb dump context
+(gdb) p ('Routing::Bgp::Ipv4Plugin::Ipv4RouteKey' *)0xed3e6c20
+$1 = (Routing::Bgp::Ipv4Plugin::Ipv4RouteKey *) 0xed3e6c20
+(gdb) p (char *)$1->toStrepImpl().data_.rawPtr_->data_
+$4 = 0xea05a6de "L3:0:default;10.91.137.0/24"
+
+(gdb) p ('Routing::Bgp::SortedBribVrfIdNlriTypeTable' *) 0x58a24d60
+$5 = (Routing::Bgp::SortedBribVrfIdNlriTypeTable *) 0x58a24d60
+(gdb) call BgpGdb::getDumpContextPtr()
+$6 = (Ark::DumpContext::Ptr *) 0xea0475d8
+(gdb) call $5->dumpState( $6.rawPtr_, 0 )
+BribVrfIdNlriTypeTable L3:6:v2/ipv4Unicast aggregationSupported yes postEorForDefaultAppList no
+  defaultRouteState ;suppressed=no;suppressionStateEvaluated=no;fibAckDelayed=yes
 ======
 ======

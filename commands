@@ -283,5 +283,11 @@ yes /src/ArBgpTest/stest/ArBgpLuRouteMapModelTest.py | head -n100 | xargs -I {} 
 =================
 /src/ArBgpTest/stest/ArBgpLuScaleChurnTest.py --vgAgents='Bgp' --vgExtraArgs='--show-reachable=yes --vgdb-error=1'
 =================
+svipul@tac-sftp:/opt/escalations/204719
+=================
+Pin project to stest host server
+StestdConfig --host stest140 --projects svipul.et44.0
+=================
+=================
 =================
 =================

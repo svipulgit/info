@@ -11,6 +11,7 @@ git config --global user.email svipul@gmail.com
 # arista.........
 a git setup (one-time only)
 a git create -p BgpCommon -n gb0
+a git package -a Bgp
 a git start myfeature  # starts topic
 a git checkout original-topic  # to switch to other topic
 a git push

@@ -31,6 +31,7 @@ a4 mut clone -p arbgp-trunk-dmz.common -c ar-conv arconv -b ArBgp -b gated -b Bg
 a4 mut switch -1
 
 a4 add -t text+x filename
+a4 edit -t text+x filename
 ====== add following in description to bypass content check ====
 autosubmitted=1
 
